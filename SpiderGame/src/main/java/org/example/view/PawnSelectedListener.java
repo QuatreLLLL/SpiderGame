@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PawnSeletedListener extends MouseAdapter {
+public class PawnSelectedListener extends MouseAdapter {
 
     private final PawnView target;
     private Point mouseOffset;
@@ -12,7 +12,7 @@ public class PawnSeletedListener extends MouseAdapter {
     private Container originalParent;
     private Point originalLocation;
 
-    public PawnSeletedListener(PawnView target) {
+    public PawnSelectedListener(PawnView target) {
         this.target = target;
         target.addMouseListener(this);
         target.addMouseMotionListener(this);
