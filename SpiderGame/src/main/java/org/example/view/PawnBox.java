@@ -58,7 +58,7 @@ public class PawnBox extends JLayeredPane {
 
     public void addListenerToPawns() {
         for (PawnView pawn : this.pawns) {
-            pawn.addMouseListener(new PawnSeletedListener(pawn));
+            new PawnSeletedListener(pawn);
         }
     }
 
