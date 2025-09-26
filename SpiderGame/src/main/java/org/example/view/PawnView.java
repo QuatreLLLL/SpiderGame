@@ -20,7 +20,7 @@ public class PawnView extends JLayeredPane {
 
         this.setLayout(null);
         this.setBounds(this.x, this.y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
-        this.setOpaque(true);
+        this.setOpaque(false);
     }
 
     @Override
