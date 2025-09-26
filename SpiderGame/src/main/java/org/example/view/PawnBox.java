@@ -11,7 +11,7 @@ public class PawnBox extends JLayeredPane {
 
     public static final int BOX_HEIGHT = 450;
 
-    public static final int ARC_PARAMETER = 20;
+    public static final int ARC_PARAMETER = 50;
 
     public static final int BOX_PADDING = 25;
 

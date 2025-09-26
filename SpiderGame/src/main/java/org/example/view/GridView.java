@@ -11,7 +11,7 @@ public class GridView extends JLayeredPane {
 
     public static final int GRID_PADDING = 25;
 
-    public static final int ARC_PARAMETER = 20;
+    public static final int ARC_PARAMETER = 50;
 
     private final List<CellView> cells;
 

@@ -7,6 +7,8 @@ public class CellView extends JLayeredPane {
 
     public static final int CELL_SIZE = 100;
 
+    public static final int ARC_PARAMETER = 50;
+
     private final int x;
 
     private final int y;
@@ -30,7 +32,7 @@ public class CellView extends JLayeredPane {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         graphics.setColor(this.innerColor);
-        graphics.fillRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE);
+        graphics.fillRoundRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE, CellView.ARC_PARAMETER, CellView.ARC_PARAMETER);
         graphics.setColor(this.borderColor);
         graphics.drawRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE);
     }
