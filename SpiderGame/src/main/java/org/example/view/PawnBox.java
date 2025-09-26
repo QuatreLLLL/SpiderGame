@@ -15,6 +15,8 @@ public class PawnBox extends JLayeredPane {
 
     public static final int BOX_PADDING = 25;
 
+    public static final int BOX_MARGIN = 100;
+
     public static final int PAWN_NUMBER = 3;
 
     private final List<PawnView> pawns;
