@@ -30,16 +30,16 @@ public class GamePage extends JFrame {
         this.topPanel.setLayout(null);
         this.topPanel.setBounds(0, 0,
                 this.width, (int) (topPanelHeightCoefficient * this.height));
-        this.topPanel.setBackground(Color.WHITE);
+        this.topPanel.setBackground(GameColor.LIGHT_GRAY.get());
 
         GridView gridView = new GridView(this.topPanel.getWidth(), this.topPanel.getHeight());
         this.topPanel.add(gridView, JLayeredPane.DEFAULT_LAYER);
 
-        PawnBox pawnBox1 = new PawnBox(0, (this.topPanel.getHeight() - PawnBox.BOX_HEIGHT) / 2, 0);
+        PawnBox pawnBox1 = new PawnBox(PawnBox.BOX_MARGIN, (this.topPanel.getHeight() - PawnBox.BOX_HEIGHT) / 2, 0);
         this.topPanel.add(pawnBox1, JLayeredPane.DEFAULT_LAYER);
         pawnBox1.addListenerToPawns();
 
-        PawnBox pawnBox2 = new PawnBox(this.topPanel.getWidth() - PawnBox.BOX_WIDTH,
+        PawnBox pawnBox2 = new PawnBox(this.topPanel.getWidth() - PawnBox.BOX_WIDTH - PawnBox.BOX_MARGIN,
                 (this.topPanel.getHeight() - PawnBox.BOX_HEIGHT) / 2, 1);
         this.topPanel.add(pawnBox2, JLayeredPane.DEFAULT_LAYER);
         pawnBox2.addListenerToPawns();
@@ -51,7 +51,7 @@ public class GamePage extends JFrame {
         this.bottomPanel.setLayout(null);
         this.bottomPanel.setBounds(0, (int) (topPanelHeightCoefficient * this.height),
                 this.width, (int) ((1 - topPanelHeightCoefficient) * this.height));
-        this.bottomPanel.setBackground(Color.LIGHT_GRAY);
+        this.bottomPanel.setBackground(GameColor.DARK_GRAY.get());
 
         JLabel playerOrder = new JLabel("ttttt");
         playerOrder.setBounds(this.bottomPanel.getWidth() / 2,  25, 200, 50);

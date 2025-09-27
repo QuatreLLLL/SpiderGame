@@ -11,7 +11,7 @@ public class GridView extends JLayeredPane {
 
     public static final int GRID_PADDING = 25;
 
-    public static final int ARC_PARAMETER = 20;
+    public static final int ARC_PARAMETER = 50;
 
     private final List<CellView> cells;
 
@@ -23,7 +23,7 @@ public class GridView extends JLayeredPane {
 
     public GridView(int x, int y) {
         this.cells = new ArrayList<>();
-        this.gridColor = new Color(160, 82, 45);
+        this.gridColor = GameColor.LIGHT_ASPAHLT.get();
         this.x = x;
         this.y = y;
 

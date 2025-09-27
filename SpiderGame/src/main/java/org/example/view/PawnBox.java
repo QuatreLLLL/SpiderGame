@@ -11,9 +11,11 @@ public class PawnBox extends JLayeredPane {
 
     public static final int BOX_HEIGHT = 450;
 
-    public static final int ARC_PARAMETER = 20;
+    public static final int ARC_PARAMETER = 50;
 
     public static final int BOX_PADDING = 25;
+
+    public static final int BOX_MARGIN = 100;
 
     public static final int PAWN_NUMBER = 3;
 
@@ -36,9 +38,9 @@ public class PawnBox extends JLayeredPane {
         this.x = x;
         this.y = y;
         this.playerId = playerId;
-        this.innerColor = new Color(128, 0, 0);
-        this.borderColor = new Color(160, 82, 45);
-        this.playerColor = this.playerId == 0 ? Color.BLUE : Color.RED;
+        this.innerColor = GameColor.DARK_ASPHALT.get();
+        this.borderColor = GameColor.LIGHT_ASPAHLT.get();
+        this.playerColor = this.playerId == 0 ? GameColor.BLUE.get() : GameColor.RED.get();
 
         this.setLayout(null);
         this.setBounds(this.x, this.y, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT);
