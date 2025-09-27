@@ -66,9 +66,10 @@ public class PawnSelectedListener extends MouseAdapter {
 
         // Retire le pion du rootLayer
         rootLayer.remove(target);
+        rootLayer.repaint();
 
         if (cell != null) {
-            target.setLocation(cell.getX(), cell.getY());
+            target.setLocation(5, 5);
             cell.add(target, JLayeredPane.PALETTE_LAYER);  // ajouter d'abord
 
             System.out.println(target.getBounds());
