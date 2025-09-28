@@ -6,10 +6,14 @@ import java.awt.*;
 public class GamePage extends JFrame {
 
     private final static int SCREEN_MARGIN = 50;
+    private final static int LABEL_MARGIN = 10;
 
     private final static int TITLE_WIDTH = 200;
-
     private final static int TITLE_HEIGHT = 100;
+    private final static int TITLE_FONT_SIZE = 28;
+
+    private final static double GAMEBOARD_COEFFICIENT = 0.7;
+    private final static double MENU_COEFFICIENT = 0.8;
 
     private int width;
 
@@ -29,36 +33,35 @@ public class GamePage extends JFrame {
         this.panel.setLayout(null);
         this.panel.setBackground(GameColor.LIGHT_GRAY.get());
 
-        GridView gridView = new GridView(this.panel.getWidth(), (int) (0.7 * this.panel.getHeight()));
+        GridView gridView = new GridView(this.panel.getWidth(),
+                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(gridView, JLayeredPane.DEFAULT_LAYER);
 
-        PawnBox pawnBox1 = new PawnBox(PawnBox.BOX_MARGIN, (int) (0.7 * this.panel.getHeight()), 0);
+        PawnBox pawnBox1 = new PawnBox(PawnBox.BOX_MARGIN,
+                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()), 0);
         this.panel.add(pawnBox1, JLayeredPane.DEFAULT_LAYER);
         pawnBox1.addListenerToPawns();
 
-
         PawnBox pawnBox2 = new PawnBox(this.panel.getWidth() - PawnBox.BOX_WIDTH - PawnBox.BOX_MARGIN,
-                (int) (0.7 * this.panel.getHeight()), 1);
+                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()), 1);
         this.panel.add(pawnBox2, JLayeredPane.DEFAULT_LAYER);
         pawnBox2.addListenerToPawns();
 
         JLabel gameTitle = new JLabel("SPIDER GAME");
-        gameTitle.setBounds((this.panel.getWidth() - GamePage.TITLE_WIDTH) / 2, 10, GamePage.TITLE_WIDTH,
-                GamePage.TITLE_HEIGHT);
+        gameTitle.setBounds((this.panel.getWidth() - GamePage.TITLE_WIDTH) / 2, GamePage.LABEL_MARGIN,
+                GamePage.TITLE_WIDTH, GamePage.TITLE_HEIGHT);
         gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        gameTitle.setFont(new Font("Arial", Font.BOLD, 28));
+        gameTitle.setFont(new Font("Arial", Font.BOLD, GamePage.TITLE_FONT_SIZE));
         this.panel.add(gameTitle);
 
-        Menu menu = new Menu(this.width, (int) (0.8 * this.height));
+        Menu menu = new Menu(this.width, (int) (GamePage.MENU_COEFFICIENT * this.height));
         this.panel.add(menu);
-
     }
 
     public void display() {
         this.setPreferredSize(new Dimension(this.width, this.height));
         this.setResizable(false);
         this.setLayout(null);
-
 
         this.initialize();
         this.pack();

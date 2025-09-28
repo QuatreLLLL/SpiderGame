@@ -1,5 +1,7 @@
 package org.example.view;
 
+import org.example.view.listeners.ValidateButtonListener;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -47,6 +49,8 @@ public class Menu extends JPanel {
                 MENU_WIDTH, MENU_HEIGHT);
         this.setOpaque(false);
         this.initialize();
+
+        this.validateButton.addActionListener(new ValidateButtonListener(this.playerOrder));
     }
 
     public void initialize() {
