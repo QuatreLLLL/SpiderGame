@@ -20,7 +20,7 @@ public class GridView extends JLayeredPane {
 
     public GridView(int x, int y) {
         this.cells = new ArrayList<>();
-        this.gridColor = GameColor.LIGHT_ASPAHLT.get();
+        this.gridColor = GameColor.LIGHT_ASPHALT.get();
         this.x = x;
         this.y = y;
 

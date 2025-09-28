@@ -17,7 +17,7 @@ public class CellView extends JLayeredPane {
     public CellView(int x, int y) {
         this.x = x;
         this.y = y;
-        this.borderColor = GameColor.LIGHT_ASPAHLT.get();
+        this.borderColor = GameColor.LIGHT_ASPHALT.get();
         this.innerColor = GameColor.DARK_ASPHALT.get();
 
         this.setLayout(null);

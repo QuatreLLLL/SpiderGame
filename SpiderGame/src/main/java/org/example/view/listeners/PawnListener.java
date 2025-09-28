@@ -31,9 +31,9 @@ public class PawnListener extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         this.mouseOffset = e.getPoint();
         this.originalParent = this.pawn.getParent();
-        this.originalLocation = this.pawn.getLocation(); // sauvegarde position initiale
+        this.originalLocation = this.pawn.getLocation();
 
-        this.rootLayer = (JLayeredPane) SwingUtilities.getRootPane(this.pawn).getLayeredPane();
+        this.rootLayer = SwingUtilities.getRootPane(this.pawn).getLayeredPane();
         Point p = SwingUtilities.convertPoint(this.originalParent, this.originalLocation, this.rootLayer);
         this.originalParent.remove(this.pawn);
         this.rootLayer.add(this.pawn, JLayeredPane.DRAG_LAYER);

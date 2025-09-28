@@ -6,7 +6,7 @@ public enum GameColor {
     BLUE(93, 173, 226),
     LIGHT_GRAY(214, 219, 223),
     DARK_GRAY(174, 182, 191),
-    LIGHT_ASPAHLT(52, 73, 94),
+    LIGHT_ASPHALT(52, 73, 94),
     DARK_ASPHALT(46, 64, 83);
 
     private final int r, g, b;

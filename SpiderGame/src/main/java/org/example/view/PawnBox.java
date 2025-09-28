@@ -35,7 +35,7 @@ public class PawnBox extends JLayeredPane {
         this.y = y;
         this.playerId = playerId;
         this.innerColor = GameColor.DARK_ASPHALT.get();
-        this.borderColor = GameColor.LIGHT_ASPAHLT.get();
+        this.borderColor = GameColor.LIGHT_ASPHALT.get();
         this.playerColor = this.playerId == 0 ? GameColor.BLUE.get() : GameColor.RED.get();
 
         this.setLayout(null);
