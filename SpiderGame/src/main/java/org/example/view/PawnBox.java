@@ -1,5 +1,7 @@
 package org.example.view;
 
+import org.example.view.listeners.PawnListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class PawnBox extends JLayeredPane {
         this.playerColor = this.playerId == 0 ? GameColor.BLUE.get() : GameColor.RED.get();
 
         this.setLayout(null);
-        this.setBounds(this.x, this.y, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT);
+        this.setBounds(this.x, (this.y - PawnBox.BOX_HEIGHT) / 2, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT);
         this.createPawnBox();
     }
 
@@ -60,7 +62,7 @@ public class PawnBox extends JLayeredPane {
 
     public void addListenerToPawns() {
         for (PawnView pawn : this.pawns) {
-            new PawnSelectedListener(pawn);
+            new PawnListener(pawn);
         }
     }
 

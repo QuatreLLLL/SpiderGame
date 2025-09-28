@@ -28,7 +28,8 @@ public class GridView extends JLayeredPane {
         this.y = y;
 
         this.setLayout(null);
-        this.setBounds((this.x - GridView.GRID_SIZE) / 2, (this.y - GridView.GRID_SIZE) / 2, GridView.GRID_SIZE, GridView.GRID_SIZE);
+        this.setBounds((this.x - GridView.GRID_SIZE) / 2, (this.y - GridView.GRID_SIZE) / 2,
+                GridView.GRID_SIZE, GridView.GRID_SIZE);
         this.createGrid();
     }
 
@@ -58,6 +59,7 @@ public class GridView extends JLayeredPane {
         Graphics2D g2d = (Graphics2D) graphics;
         g2d.setColor(this.gridColor);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.fillRoundRect(0, 0, GridView.GRID_SIZE, GridView.GRID_SIZE, GridView.ARC_PARAMETER, GridView.ARC_PARAMETER);
+        g2d.fillRoundRect(0, 0, GridView.GRID_SIZE, GridView.GRID_SIZE, GridView.ARC_PARAMETER,
+                GridView.ARC_PARAMETER);
     }
 }
