@@ -11,17 +11,21 @@ public class PawnView extends JLayeredPane {
     private final int x;
     private final int y;
 
+    private final int id;
+
     private final Color color;
 
-    public PawnView(int x, int y, Color color) {
+    public PawnView(int x, int y, Color color, int id) {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.id = id;
 
         this.setLayout(null);
         this.setBounds(this.x, this.y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
         this.setOpaque(false);
     }
+
 
     @Override
     protected void paintComponent(Graphics graphics) {

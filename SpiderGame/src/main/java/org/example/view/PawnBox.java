@@ -1,7 +1,5 @@
 package org.example.view;
 
-import org.example.view.listeners.PawnListener;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,8 +18,8 @@ public class PawnBox extends JLayeredPane {
 
     private final List<PawnView> pawns;
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
 
     private final int playerId;
 
@@ -29,18 +27,24 @@ public class PawnBox extends JLayeredPane {
     private final Color borderColor;
     private final Color playerColor;
 
-    public PawnBox(int x, int y, int playerId) {
+    public PawnBox(int playerId) {
         this.pawns = new ArrayList<>();
-        this.x = x;
-        this.y = y;
         this.playerId = playerId;
         this.innerColor = GameColor.DARK_ASPHALT.get();
         this.borderColor = GameColor.LIGHT_ASPHALT.get();
-        this.playerColor = this.playerId == 0 ? GameColor.BLUE.get() : GameColor.RED.get();
+        this.playerColor = this.playerId == 1 ? GameColor.BLUE.get() : GameColor.RED.get();
+        this.createPawnBox();
+    }
 
+    public List<PawnView> getPawns() {
+        return this.pawns;
+    }
+
+    public void initialize(int x, int y) {
+        this.x = x;
+        this.y = y;
         this.setLayout(null);
         this.setBounds(this.x, (this.y - PawnBox.BOX_HEIGHT) / 2, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT);
-        this.createPawnBox();
     }
 
     public void createPawnBox() {
@@ -48,17 +52,19 @@ public class PawnBox extends JLayeredPane {
             int PAWN_OFFSET = ((PawnBox.BOX_HEIGHT - 2 * PawnBox.BOX_PADDING) / (PawnBox.PAWN_NUMBER));
             PawnView pawn = new PawnView(PawnBox.BOX_WIDTH / 2 - PawnView.RADIUS,
                     PawnBox.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS,
-                    this.playerColor);
+                    this.playerColor, i);
             this.add(pawn, JLayeredPane.DEFAULT_LAYER);
             this.pawns.add(pawn);
         }
     }
 
-    public void addListenerToPawns() {
-        for (PawnView pawn : this.pawns) {
-            new PawnListener(pawn);
+/*    public void initializePawns() {
+        for (int i = 0; i < 3; i++) {
+            int PAWN_OFFSET = ((PawnBox.BOX_HEIGHT - 2 * PawnBox.BOX_PADDING) / (PawnBox.PAWN_NUMBER));
+            this.pawns.get(i).initialize(PawnBox.BOX_WIDTH / 2 - PawnView.RADIUS,
+                    PawnBox.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS);
         }
-    }
+    }*/
 
     @Override
     public void paintComponent(Graphics graphics) {

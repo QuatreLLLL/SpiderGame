@@ -1,6 +1,6 @@
 package org.example.view;
 
-import org.example.view.listeners.ValidateButtonListener;
+import org.example.controller.ValidateButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class Menu extends JPanel {
         this.validateButton = new JButton("Validate");
         this.undoButton = new JButton("Undo");
         this.restartButton = new JButton("Restart");
-        this.playerOrder = new JLabel("Player");
+        this.playerOrder = new JLabel("Player 1");
 
         this.setLayout(null);
         this.setBounds((this.x - MENU_WIDTH) / 2, this.y - MENU_HEIGHT + Menu.MENU_MARGIN,

@@ -30,6 +30,10 @@ public class Pawn {
         this.position = position;
     }
 
+    public boolean isPlayable(Player player) {
+        return this.symbol == player.getId();
+    }
+
     public boolean isOnGrid() {
         return this.position != null;
     }

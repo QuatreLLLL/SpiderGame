@@ -15,18 +15,12 @@ public class GridView extends JLayeredPane {
 
     private final Color gridColor;
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
 
-    public GridView(int x, int y) {
+    public GridView() {
         this.cells = new ArrayList<>();
         this.gridColor = GameColor.LIGHT_ASPHALT.get();
-        this.x = x;
-        this.y = y;
-
-        this.setLayout(null);
-        this.setBounds((this.x - GridView.GRID_SIZE) / 2, (this.y - GridView.GRID_SIZE) / 2,
-                GridView.GRID_SIZE, GridView.GRID_SIZE);
         this.createGrid();
     }
 
@@ -34,11 +28,20 @@ public class GridView extends JLayeredPane {
         return this.cells;
     }
 
+    public void iniatialize(int x, int y) {
+        this.x = x;
+        this.y = y;
+
+        this.setLayout(null);
+        this.setBounds((this.x - GridView.GRID_SIZE) / 2, (this.y - GridView.GRID_SIZE) / 2,
+                GridView.GRID_SIZE, GridView.GRID_SIZE);
+    }
+
     private void createGrid() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 CellView cellView = new CellView(GridView.GRID_PADDING + j * CellView.CELL_SIZE,
-                        GridView.GRID_PADDING + i * CellView.CELL_SIZE);
+                        GridView.GRID_PADDING + i * CellView.CELL_SIZE,i + j);
                 cellView.setBounds(GridView.GRID_PADDING + j * CellView.CELL_SIZE,
                         GridView.GRID_PADDING + i * CellView.CELL_SIZE,
                         CellView.CELL_SIZE,

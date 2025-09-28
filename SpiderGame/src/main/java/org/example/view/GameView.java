@@ -3,7 +3,7 @@ package org.example.view;
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePage extends JFrame {
+public class GameView extends JFrame {
 
     private final static int SCREEN_MARGIN = 50;
     private final static int LABEL_MARGIN = 10;
@@ -21,10 +21,20 @@ public class GamePage extends JFrame {
 
     private JPanel panel;
 
-    public GamePage() {
+    private GridView gridView;
+
+    private PawnBox pawnBox1;
+
+    private PawnBox pawnBox2;
+
+
+    public GameView(GridView gridView, PawnBox pawnBox1, PawnBox pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        this.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - GamePage.SCREEN_MARGIN;
+        this.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - GameView.SCREEN_MARGIN;
         this.panel = (JPanel) this.getContentPane();
+        this.gridView = gridView;
+        this.pawnBox1 = pawnBox1;
+        this.pawnBox2 = pawnBox2;
     }
 
     public void initialize() {
@@ -33,28 +43,26 @@ public class GamePage extends JFrame {
         this.panel.setLayout(null);
         this.panel.setBackground(GameColor.LIGHT_GRAY.get());
 
-        GridView gridView = new GridView(this.panel.getWidth(),
-                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
+        this.gridView.iniatialize(this.panel.getWidth(),
+                (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(gridView, JLayeredPane.DEFAULT_LAYER);
 
-        PawnBox pawnBox1 = new PawnBox(PawnBox.BOX_MARGIN,
-                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()), 0);
+        this.pawnBox1.initialize(PawnBox.BOX_MARGIN,
+                (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(pawnBox1, JLayeredPane.DEFAULT_LAYER);
-        pawnBox1.addListenerToPawns();
 
-        PawnBox pawnBox2 = new PawnBox(this.panel.getWidth() - PawnBox.BOX_WIDTH - PawnBox.BOX_MARGIN,
-                (int) (GamePage.GAMEBOARD_COEFFICIENT * this.panel.getHeight()), 1);
+        this.pawnBox2.initialize(this.panel.getWidth() - PawnBox.BOX_WIDTH - PawnBox.BOX_MARGIN,
+                (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(pawnBox2, JLayeredPane.DEFAULT_LAYER);
-        pawnBox2.addListenerToPawns();
 
         JLabel gameTitle = new JLabel("SPIDER GAME");
-        gameTitle.setBounds((this.panel.getWidth() - GamePage.TITLE_WIDTH) / 2, GamePage.LABEL_MARGIN,
-                GamePage.TITLE_WIDTH, GamePage.TITLE_HEIGHT);
+        gameTitle.setBounds((this.panel.getWidth() - GameView.TITLE_WIDTH) / 2, GameView.LABEL_MARGIN,
+                GameView.TITLE_WIDTH, GameView.TITLE_HEIGHT);
         gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        gameTitle.setFont(new Font("Arial", Font.BOLD, GamePage.TITLE_FONT_SIZE));
+        gameTitle.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
         this.panel.add(gameTitle);
 
-        Menu menu = new Menu(this.width, (int) (GamePage.MENU_COEFFICIENT * this.height));
+        Menu menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
         this.panel.add(menu);
     }
 
@@ -68,3 +76,4 @@ public class GamePage extends JFrame {
         this.setVisible(true);
     }
 }
+

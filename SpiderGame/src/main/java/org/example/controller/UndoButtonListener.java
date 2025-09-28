@@ -1,4 +1,4 @@
-package org.example.view.listeners;
+package org.example.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

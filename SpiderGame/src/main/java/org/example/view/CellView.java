@@ -8,21 +8,39 @@ public class CellView extends JLayeredPane {
     public static final int CELL_SIZE = 100;
     public static final int ARC_PARAMETER = 50;
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
+
+    private int id;
 
     private final Color borderColor;
     private final Color innerColor;
 
-    public CellView(int x, int y) {
+    private boolean status;
+
+    public CellView(int x, int y, int id) {
         this.x = x;
         this.y = y;
+        this.id = id;
         this.borderColor = GameColor.LIGHT_ASPHALT.get();
         this.innerColor = GameColor.DARK_ASPHALT.get();
+        this.status = false;
 
         this.setLayout(null);
         this.setBounds(this.x, this.y, CellView.CELL_SIZE, CellView.CELL_SIZE);
         this.setOpaque(false);
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public boolean getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
