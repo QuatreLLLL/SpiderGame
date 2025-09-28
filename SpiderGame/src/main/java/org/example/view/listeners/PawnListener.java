@@ -47,7 +47,7 @@ public class PawnListener extends MouseAdapter {
         Point mousePosition = SwingUtilities.convertPoint(target, e.getPoint(), rootLayer);
         Container cell = null;
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(target);
-        GridView gridView = (GridView) ((Container) frame.getContentPane().getComponents()[0]).getComponents()[0];
+        GridView gridView = (GridView) frame.getContentPane().getComponents()[0];
 
         for (CellView cellView : gridView.getCells()) {
             Rectangle bounds = SwingUtilities.convertRectangle(cellView.getParent(), cellView.getBounds(), rootLayer);
