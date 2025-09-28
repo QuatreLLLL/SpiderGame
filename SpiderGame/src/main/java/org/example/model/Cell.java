@@ -7,7 +7,6 @@ import java.util.List;
 public class Cell {
 
     private int rowId;
-
     private int columnId;
 
     private boolean status;

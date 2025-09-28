@@ -9,7 +9,6 @@ public class PawnView extends JLayeredPane {
     public static final int RADIUS = 45;
 
     private final int x;
-
     private final int y;
 
     private final Color color;

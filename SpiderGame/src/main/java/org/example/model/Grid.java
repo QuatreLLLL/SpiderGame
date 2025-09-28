@@ -6,13 +6,10 @@ import java.util.List;
 public class Grid {
 
     private final int GRID_SIZE = 3;
-
     private final int GRID_PAWNS_NUMBER = 6;
 
     private List<Cell> grid;
-
     private List<Player> players;
-
     private List<Pawn> pawns;
 
     public Grid() {

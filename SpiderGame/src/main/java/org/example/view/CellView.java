@@ -6,15 +6,12 @@ import java.awt.*;
 public class CellView extends JLayeredPane {
 
     public static final int CELL_SIZE = 100;
-
     public static final int ARC_PARAMETER = 50;
 
     private final int x;
-
     private final int y;
 
     private final Color borderColor;
-
     private final Color innerColor;
 
     public CellView(int x, int y) {

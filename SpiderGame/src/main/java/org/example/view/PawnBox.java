@@ -10,13 +10,10 @@ import java.util.List;
 public class PawnBox extends JLayeredPane {
 
     public static final int BOX_WIDTH = 150;
-
     public static final int BOX_HEIGHT = 450;
-
     public static final int ARC_PARAMETER = 50;
 
     public static final int BOX_PADDING = 25;
-
     public static final int BOX_MARGIN = 100;
 
     public static final int PAWN_NUMBER = 3;
@@ -24,15 +21,12 @@ public class PawnBox extends JLayeredPane {
     private final List<PawnView> pawns;
 
     private final int x;
-
     private final int y;
 
     private final int playerId;
 
     private final Color innerColor;
-
     private final Color borderColor;
-
     private final Color playerColor;
 
     public PawnBox(int x, int y, int playerId) {
