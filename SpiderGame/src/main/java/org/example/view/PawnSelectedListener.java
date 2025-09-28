@@ -81,8 +81,7 @@ public class PawnSelectedListener extends MouseAdapter {
             originalParent = cell;
         } else {
             originalParent.add(target);
-            Point p = SwingUtilities.convertPoint(rootLayer, originalLocation, originalParent);
-            target.setLocation(p);
+            target.setLocation(originalLocation);
             originalParent.revalidate();
             originalParent.repaint();
         }
