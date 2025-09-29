@@ -21,7 +21,7 @@ public class PlayerController extends MouseAdapter {
         this.pawns = new ArrayList<>();
 
         this.createPawnControllers();
-        this.registerPawnControllers();
+        this.registerPawnListeners();
     }
 
     public Player getPlayer() {
@@ -38,11 +38,11 @@ public class PlayerController extends MouseAdapter {
         }
     }
 
-    public void registerPawnControllers() {
+    public void registerPawnListeners() {
         this.pawns.forEach(pawnController -> pawnController.getPawnView().enableListeners());
     }
 
-    public void unregisterPawnControllers() {
+    public void unregisterPawnListeners() {
         this.pawns.forEach(pawnController -> pawnController.getPawnView().disableListeners());
     }
 
