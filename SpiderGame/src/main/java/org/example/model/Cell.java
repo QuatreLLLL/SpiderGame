@@ -52,7 +52,11 @@ public class Cell {
                 {this.rowId + 1, this.columnId},
                 {this.rowId - 1, this.columnId},
                 {this.rowId, this.columnId + 1},
-                {this.rowId, this.columnId - 1}
+                {this.rowId, this.columnId - 1},
+                {this.rowId - 1, this.columnId - 1},
+                {this.rowId + 1, this.rowId + 1},
+                {this.rowId + 1, this.columnId - 1},
+                {this.rowId - 1, this.columnId + 1}
         };
 
         for (int i = 0; i < Arrays.stream(potentialNeighborsIds).count(); i++) {
