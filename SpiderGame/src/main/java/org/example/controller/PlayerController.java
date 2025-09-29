@@ -13,7 +13,7 @@ public class PlayerController extends MouseAdapter {
 
     private final PawnBox pawnBox;
 
-    private List<PawnListener> pawns;
+    private List<PawnController> pawns;
 
     public PlayerController(int id) {
         this.player = new Player(id);
@@ -34,20 +34,16 @@ public class PlayerController extends MouseAdapter {
 
     private void createPawnControllers() {
         for (int i = 0; i < 3; i++) {
-            this.pawns.add(new PawnListener(this.player.getPawns().get(i), this.pawnBox.getPawns().get(i)));
+            this.pawns.add(new PawnController(this.player.getPawns().get(i), this.pawnBox.getPawns().get(i)));
         }
     }
 
     public void registerPawnControllers() {
-        for (PawnListener pawnListener : this.pawns) {
-            pawnListener.registerListeners();
-        }
+        this.pawns.forEach(pawnController -> pawnController.getPawnView().enableListeners());
     }
 
     public void unregisterPawnControllers() {
-        for (PawnListener pawnListener : this.pawns) {
-            pawnListener.unregisterListeners();
-        }
+        this.pawns.forEach(pawnController -> pawnController.getPawnView().disableListeners());
     }
 
 }

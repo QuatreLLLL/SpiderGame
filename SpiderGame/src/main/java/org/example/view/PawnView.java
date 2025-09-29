@@ -2,10 +2,14 @@ package org.example.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.function.Consumer;
 
 public class PawnView extends JLayeredPane {
 
+    private final static int PAWN_PADDING = 5;
     public static final int RADIUS = 45;
 
     private final int x;
@@ -14,6 +18,17 @@ public class PawnView extends JLayeredPane {
     private final int id;
 
     private final Color color;
+
+    private Point mouseOffset;
+    private JLayeredPane rootLayer;
+    private Container originalParent;
+    private Point originalLocation;
+
+    private boolean listenersEnabled;
+
+    private Consumer<Point> onMousePressed;
+    private Consumer<Point> onMouseReleased;
+    private Consumer<Point> onMouseDragged;
 
     public PawnView(int x, int y, Color color, int id) {
         this.x = x;
@@ -24,8 +39,128 @@ public class PawnView extends JLayeredPane {
         this.setLayout(null);
         this.setBounds(this.x, this.y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
         this.setOpaque(false);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent event) {
+                if (PawnView.this.onMousePressed != null && PawnView.this.listenersEnabled) {
+                    PawnView.this.onMousePressed.accept(event.getPoint());
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent event) {
+                if (PawnView.this.onMouseReleased != null && PawnView.this.listenersEnabled) {
+                    PawnView.this.onMouseReleased.accept(event.getPoint());
+                }
+            }
+        });
+
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent event) {
+                if (PawnView.this.onMouseDragged != null && PawnView.this.listenersEnabled) {
+                    PawnView.this.onMouseDragged.accept(event.getPoint());
+                }
+            }
+        });
     }
 
+    public Point getMouseOffset() {
+        return this.mouseOffset;
+    }
+
+    public void setMouseOffset(Point mouseOffset) {
+        this.mouseOffset = mouseOffset;
+    }
+
+    public JLayeredPane getRootLayer() {
+        return this.rootLayer;
+    }
+
+    public void setOriginalParent(Container originalParent) {
+        this.originalParent = originalParent;
+    }
+
+    public void setOriginalLocation(Point originalLocation) {
+        this.originalLocation = originalLocation;
+    }
+
+    public void enableListeners() {
+        this.listenersEnabled = true;
+    }
+
+    public void disableListeners() {
+        this.listenersEnabled = false;
+    }
+
+    public void setOnMousePressed(Consumer<Point> handler) {
+        this.onMousePressed = handler;
+    }
+
+    public void setOnMouseReleased(Consumer<Point> handler) {
+        this.onMouseReleased = handler;
+    }
+
+    public void setOnMouseDragged(Consumer<Point> handler) {
+        this.onMouseDragged = handler;
+    }
+
+    public Point convertPointToRootLayer(Point point) {
+        return SwingUtilities.convertPoint(this, point, this.rootLayer);
+    }
+
+    public void startDrag() {
+        this.rootLayer = SwingUtilities.getRootPane(this).getLayeredPane();
+
+        Point p = SwingUtilities.convertPoint(
+                this.originalParent,
+                this.originalLocation,
+                this.rootLayer
+        );
+
+        this.originalParent.remove(this);
+        this.rootLayer.add(this, JLayeredPane.DRAG_LAYER);
+        this.setLocation(p);
+        this.rootLayer.repaint();
+    }
+
+    public CellView findTargetCell(Point mousePosition) {
+        CellView cell = null;
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        GridView gridView = (GridView) frame.getContentPane().getComponents()[0];
+
+        for (CellView cellView : gridView.getCells()) {
+            Rectangle bounds = SwingUtilities.convertRectangle(cellView.getParent(), cellView.getBounds(), this.rootLayer);
+            if (bounds.contains(mousePosition)) {
+                cell = cellView;
+                break;
+            }
+        }
+        return cell;
+    }
+
+    public void snapToCell(CellView cell) {
+        this.rootLayer.remove(this);
+        this.rootLayer.repaint();
+
+        this.setLocation(PawnView.PAWN_PADDING, PawnView.PAWN_PADDING);
+        cell.add(this, JLayeredPane.PALETTE_LAYER);
+        cell.revalidate();
+        cell.repaint();
+
+        this.originalParent = cell;
+    }
+
+    public void cancelMove() {
+        this.rootLayer.remove(this);
+        this.rootLayer.repaint();
+
+        this.originalParent.add(this);
+        this.setLocation(this.originalLocation);
+        this.originalParent.revalidate();
+        this.originalParent.repaint();
+    }
 
     @Override
     protected void paintComponent(Graphics graphics) {
