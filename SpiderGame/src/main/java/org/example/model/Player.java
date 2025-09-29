@@ -16,6 +16,7 @@ public class Player {
     public Player(int id) {
         this.id = id;
         this.pawns = new ArrayList<>();
+
         this.createPawns();
     }
 

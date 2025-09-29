@@ -1,65 +1,78 @@
 package org.example.model;
 
-import org.example.controller.PawnListener;
-import org.example.view.CellView;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.example.model.Grid.GRID_SIZE;
+import java.util.stream.Collectors;
 
 public class Game {
 
     private final static int GRID_PAWNS_NUMBER = 6;
 
     private List<Player> players;
+    private List<Pawn> pawns;
     private Grid grid;
 
     public Game() {
         this.players = new ArrayList<>();
+        this.pawns = new ArrayList<>();
         this.grid = new Grid();
     }
 
-    public void movePawns() {
-        for (Player player : this.players) {
-        }
+    public void addPawn(Pawn pawn) {
+        this.pawns.add(pawn);
     }
 
-    public boolean isPlayable(Pawn pawn, Cell cell) {
-        return pawn.getPosition().getNeighborhood().contains(cell) && cell.isEmpty();
+    public Grid getGrid() {
+        return this.grid;
     }
 
-/*    public void movePawn(Pawn pawn, Cell cell) {
-        Pawn pawn = player.choosePawn();
-        int[] position = player.choosePosition();
-        if (this.isPlayable(position, pawn)) {
-            if (this.pawns.size() == Game.GRID_PAWNS_NUMBER) {
-                pawn.getPosition().setPawn(null);
-                this.grid.getGrid().get(position[0] * GRID_SIZE + position[1]).setPawn(pawn);
-                pawn.setPosition(this.grid.getGrid().get(position[0] * GRID_SIZE + position[1]));
-            } else {
-                this.grid.getGrid().get(position[0] * GRID_SIZE + position[1]).setPawn(pawn);
-                pawn.setPosition(this.grid.getGrid().get(position[0] * GRID_SIZE + position[1]));
-                this.pawns.add(pawn);
-            }
-        }
-    }*/
+    public List<Cell> defineLegalMoves(Pawn pawn) {
+        List<Cell> candidates = (this.pawns.size() == Game.GRID_PAWNS_NUMBER)
+                ? pawn.getPosition().getNeighborhood()
+                : this.grid.getCells();
 
-/*    private boolean isPlayable(int[] move, Pawn pawn) {
-        Cell cell = this.grid.getGrid().get(move[0] * GRID_SIZE + move[1]);
-        if (cell.isEmpty()) {
-            if (!pawn.isOnGrid()) {
-                return true;
-            } else {
-                return pawn.isOnGrid()
-                        && pawn.getPosition().getNeighborhood().contains(cell)
-                        && this.pawns.size() == GRID_PAWNS_NUMBER;
-            }
+        return candidates.stream()
+                .filter(Cell::isEmpty)
+                .collect(Collectors.toList());
+    }
+
+    public void updatePosition(Pawn pawn, Cell cell) {
+        pawn.getPosition().setPawn(null);
+        pawn.setPosition(cell);
+        cell.setPawn(pawn);
+    }
+
+    private int countConsecutive(int row, int column, int dx, int dy, Pawn pawn) {
+        int count = 0;
+        int x = row + dx;
+        int y = column + dy;
+
+        while (x >= 0 && x < Grid.GRID_SIZE && y >= 0 && y < Grid.GRID_SIZE
+                && this.grid.getCells().get(x + y).getPawn().getSymbol() == pawn.getSymbol()) {
+            count++;
+            x += dx;
+            y += dy;
+        }
+        return count;
+    }
+
+    public boolean isOver(Pawn lastMove) {
+        int[][] directions = {
+                {1, 0},
+                {0, 1},
+                {1, 1},
+                {1, -1}
+        };
+
+        for (int[] dir : directions) {
+            int count = 1;
+            int row = lastMove.getPosition().getRowId();
+            int column = lastMove.getPosition().getColumnId();
+
+            count += countConsecutive(row, column, dir[0], dir[1], lastMove);
+            count += countConsecutive(row, column, -dir[0], -dir[1], lastMove);
+            if (count >= 3) return true;
         }
         return false;
     }
-
-    public boolean isOver() {
-        return true;
-    }*/
 }
