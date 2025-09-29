@@ -22,6 +22,10 @@ public class Game {
         this.pawns.add(pawn);
     }
 
+    public void addPlayer(Player player) {
+        this.players.add(player);
+    }
+
     public Grid getGrid() {
         return this.grid;
     }
@@ -36,8 +40,11 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-    public void updatePosition(Pawn pawn, Cell cell) {
-        pawn.getPosition().setPawn(null);
+    public void updatePosition(Pawn pawn, int[] cellId) {
+        Cell cell = this.grid.findCell(cellId[0], cellId[1]);
+        if (this.pawns.size() == Game.GRID_PAWNS_NUMBER) {
+            pawn.getPosition().setPawn(null);
+        }
         pawn.setPosition(cell);
         cell.setPawn(pawn);
     }
@@ -57,6 +64,10 @@ public class Game {
     }
 
     public boolean isOver(Pawn lastMove) {
+        if (lastMove == null) {
+            return false;
+        }
+
         int[][] directions = {
                 {1, 0},
                 {0, 1},
@@ -73,6 +84,7 @@ public class Game {
             count += countConsecutive(row, column, -dir[0], -dir[1], lastMove);
             if (count >= 3) return true;
         }
+
         return false;
     }
 }

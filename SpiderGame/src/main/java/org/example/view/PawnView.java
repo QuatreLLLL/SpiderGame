@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PawnView extends JLayeredPane {
@@ -21,10 +22,15 @@ public class PawnView extends JLayeredPane {
 
     private Point mouseOffset;
     private JLayeredPane rootLayer;
-    private Container originalParent;
-    private Point originalLocation;
+    private Container formerParent;
+    private Point formerLocation;
+    private Container currentParent;
+    private Point currentLocation;
 
     private boolean listenersEnabled;
+    private boolean isSelected;
+
+    private Optional<int[]> cellId;
 
     private Consumer<Point> onMousePressed;
     private Consumer<Point> onMouseReleased;
@@ -35,6 +41,7 @@ public class PawnView extends JLayeredPane {
         this.y = y;
         this.color = color;
         this.id = id;
+        this.isSelected = false;
 
         this.setLayout(null);
         this.setBounds(this.x, this.y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
@@ -74,16 +81,24 @@ public class PawnView extends JLayeredPane {
         this.mouseOffset = mouseOffset;
     }
 
+    public boolean isSelected() {
+        return this.isSelected;
+    }
+
+    public Optional<int[]> getCellId() {
+        return this.cellId;
+    }
+
     public JLayeredPane getRootLayer() {
         return this.rootLayer;
     }
 
-    public void setOriginalParent(Container originalParent) {
-        this.originalParent = originalParent;
+    public void setCurrentParent(Container currentParent) {
+        this.currentParent = currentParent;
     }
 
-    public void setOriginalLocation(Point originalLocation) {
-        this.originalLocation = originalLocation;
+    public void setCurrentLocation(Point currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public void enableListeners() {
@@ -111,15 +126,16 @@ public class PawnView extends JLayeredPane {
     }
 
     public void startDrag() {
+        this.isSelected = true;
         this.rootLayer = SwingUtilities.getRootPane(this).getLayeredPane();
 
         Point p = SwingUtilities.convertPoint(
-                this.originalParent,
-                this.originalLocation,
+                this.currentParent,
+                this.currentLocation,
                 this.rootLayer
         );
 
-        this.originalParent.remove(this);
+        this.currentParent.remove(this);
         this.rootLayer.add(this, JLayeredPane.DRAG_LAYER);
         this.setLocation(p);
         this.rootLayer.repaint();
@@ -144,22 +160,23 @@ public class PawnView extends JLayeredPane {
         this.rootLayer.remove(this);
         this.rootLayer.repaint();
 
+        this.cellId = Optional.of(new int[] {cell.getRowId(), cell.getColumnId()});
         this.setLocation(PawnView.PAWN_PADDING, PawnView.PAWN_PADDING);
         cell.add(this, JLayeredPane.PALETTE_LAYER);
         cell.revalidate();
         cell.repaint();
 
-        this.originalParent = cell;
+        this.currentParent = cell;
     }
 
     public void cancelMove() {
         this.rootLayer.remove(this);
         this.rootLayer.repaint();
 
-        this.originalParent.add(this);
-        this.setLocation(this.originalLocation);
-        this.originalParent.revalidate();
-        this.originalParent.repaint();
+        this.currentParent.add(this);
+        this.setLocation(this.currentLocation);
+        this.currentParent.revalidate();
+        this.currentParent.repaint();
     }
 
     @Override

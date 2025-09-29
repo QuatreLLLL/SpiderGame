@@ -3,6 +3,7 @@ package org.example;
 import org.example.controller.GameController;
 import org.example.controller.GridController;
 import org.example.controller.PlayerController;
+import org.example.model.Game;
 import org.example.model.Grid;
 import org.example.model.Player;
 import org.example.view.GridView;
@@ -13,9 +14,7 @@ import org.example.view.PawnBox;
 public class Main {
 
     public static void main(String[] args) {
-
-
-        GridController gridController = new GridController();
+       GridController gridController = new GridController();
         PlayerController playerController1 = new PlayerController(1);
         PlayerController playerController2 = new PlayerController(2);
 

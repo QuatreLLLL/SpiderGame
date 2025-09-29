@@ -2,6 +2,10 @@ package org.example.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
 public class GameView extends JFrame {
 
@@ -16,17 +20,15 @@ public class GameView extends JFrame {
     private final static double MENU_COEFFICIENT = 0.8;
 
     private int width;
-
     private int height;
 
     private JPanel panel;
-
     private GridView gridView;
-
     private PawnBox pawnBox1;
-
     private PawnBox pawnBox2;
+    private Menu menu;
 
+    private Runnable onValidateButtonPressed;
 
     public GameView(GridView gridView, PawnBox pawnBox1, PawnBox pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -35,7 +37,26 @@ public class GameView extends JFrame {
         this.gridView = gridView;
         this.pawnBox1 = pawnBox1;
         this.pawnBox2 = pawnBox2;
+        this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
+
+        this.menu.getValidateButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                if (GameView.this.onValidateButtonPressed != null) {
+                    GameView.this.onValidateButtonPressed.run();
+                }
+            }
+        });
     }
+
+    public Menu getMenu() {
+        return this.menu;
+    }
+
+    public void setOnValidateButtonPressed(Runnable handler) {
+        this.onValidateButtonPressed = handler;
+    }
+
 
     public void initialize() {
 
@@ -61,9 +82,7 @@ public class GameView extends JFrame {
         gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
         gameTitle.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
         this.panel.add(gameTitle);
-
-        Menu menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
-        this.panel.add(menu);
+        this.panel.add(this.menu);
     }
 
     public void display() {

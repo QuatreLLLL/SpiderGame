@@ -33,4 +33,12 @@ public class Player {
             this.pawns.add(new Pawn(i, this.id));
         }
     }
+
+    public Pawn selectPawn(Pawn pawn) {
+        return pawn;
+    }
+
+    public Cell selectCell(Cell cell) {
+        return cell;
+    }
 }

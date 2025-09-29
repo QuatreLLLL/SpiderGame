@@ -11,17 +11,19 @@ public class CellView extends JLayeredPane {
     private int x;
     private int y;
 
-    private int id;
+    private int rowId;
+    private int columnId;
 
     private final Color borderColor;
     private final Color innerColor;
 
     private boolean status;
 
-    public CellView(int x, int y, int id) {
+    public CellView(int x, int y, int rowId, int columnId) {
         this.x = x;
         this.y = y;
-        this.id = id;
+        this.rowId = rowId;
+        this.columnId =columnId;
         this.borderColor = GameColor.LIGHT_ASPHALT.get();
         this.innerColor = GameColor.DARK_ASPHALT.get();
         this.status = false;
@@ -31,8 +33,12 @@ public class CellView extends JLayeredPane {
         this.setOpaque(false);
     }
 
-    public int getId() {
-        return this.id;
+    public int getRowId() {
+        return this.rowId;
+    }
+
+    public int getColumnId() {
+        return this.columnId;
     }
 
     public boolean getStatus() {

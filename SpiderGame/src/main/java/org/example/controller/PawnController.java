@@ -21,14 +21,18 @@ public class PawnController {
         this.pawnView.setOnMouseDragged(this::handleMouseDragged);
     }
 
+    public Pawn getPawn() {
+        return this.pawn;
+    }
+
     public PawnView getPawnView() {
         return this.pawnView;
     }
 
     public void handleMousePressed(Point point) {
         this.pawnView.setMouseOffset(point);
-        this.pawnView.setOriginalParent(this.pawnView.getParent());
-        this.pawnView.setOriginalLocation(this.pawnView.getLocation());
+        this.pawnView.setCurrentParent(this.pawnView.getParent());
+        this.pawnView.setCurrentLocation(this.pawnView.getLocation());
 
         this.pawnView.startDrag();
     }
@@ -40,7 +44,7 @@ public class PawnController {
         this.pawnView.getRootLayer().remove(this.pawnView);
         this.pawnView.getRootLayer().repaint();
 
-        if (cell != null) {
+        if (cell != null && cell.getStatus()) {
             this.pawnView.snapToCell(cell);
         } else {
             this.pawnView.cancelMove();

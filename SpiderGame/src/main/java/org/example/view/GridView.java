@@ -41,7 +41,7 @@ public class GridView extends JLayeredPane {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 CellView cellView = new CellView(GridView.GRID_PADDING + j * CellView.CELL_SIZE,
-                        GridView.GRID_PADDING + i * CellView.CELL_SIZE,i + j);
+                        GridView.GRID_PADDING + i * CellView.CELL_SIZE, i, j);
                 cellView.setBounds(GridView.GRID_PADDING + j * CellView.CELL_SIZE,
                         GridView.GRID_PADDING + i * CellView.CELL_SIZE,
                         CellView.CELL_SIZE,
