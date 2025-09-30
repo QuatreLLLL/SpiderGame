@@ -14,7 +14,7 @@ public class PlayerController extends MouseAdapter {
 
     private final PawnBox pawnBox;
 
-    private List<PawnController> pawns;
+    private final List<PawnController> pawns;
 
     private boolean isPlaying;
 

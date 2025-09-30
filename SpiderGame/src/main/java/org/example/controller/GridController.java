@@ -12,7 +12,7 @@ public class GridController {
 
     private final GridView gridView;
 
-    private List<CellController> cells;
+    private final List<CellController> cells;
 
 
     public GridController() {

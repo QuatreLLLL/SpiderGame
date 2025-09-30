@@ -2,9 +2,9 @@ package org.example.model;
 
 public class Pawn {
 
-    private int id;
+    private final int id;
 
-    private int symbol;
+    private final int symbol;
 
     private Cell position;
 
@@ -19,11 +19,11 @@ public class Pawn {
     }
 
     public int getSymbol() {
-        return symbol;
+        return this.symbol;
     }
 
     public Cell getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Cell position) {

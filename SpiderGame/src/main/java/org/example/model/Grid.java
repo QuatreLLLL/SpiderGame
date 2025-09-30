@@ -5,13 +5,12 @@ import java.util.List;
 
 public class Grid {
 
-    public final static int GRID_SIZE = 3;
+    public static final int GRID_SIZE = 3;
 
-    private List<Cell> cells;
+    private final List<Cell> cells;
 
     public Grid() {
         this.cells = new ArrayList<>();
-
         this.createGrid();
     }
 
@@ -20,8 +19,8 @@ public class Grid {
     }
 
     public void createGrid() {
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < Grid.GRID_SIZE; i++) {
+            for (int j = 0; j < Grid.GRID_SIZE; j++) {
                 this.cells.add(new Cell(i, j));
             }
         }

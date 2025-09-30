@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 
 public class Game {
 
-    private final static int GRID_PAWNS_NUMBER = 6;
+    private static final int GRID_PAWNS_NUMBER = 6;
 
-    private List<Player> players;
-    private List<Pawn> pawns;
-    private Grid grid;
+    private final List<Player> players;
+    private final List<Pawn> pawns;
+    private final Grid grid;
 
     public Game() {
         this.players = new ArrayList<>();
@@ -80,9 +80,11 @@ public class Game {
             int row = lastMove.getPosition().getRowId();
             int column = lastMove.getPosition().getColumnId();
 
-            count += countConsecutive(row, column, dir[0], dir[1], lastMove);
-            count += countConsecutive(row, column, -dir[0], -dir[1], lastMove);
-            if (count >= 3) return true;
+            count += this.countConsecutive(row, column, dir[0], dir[1], lastMove);
+            count += this.countConsecutive(row, column, -dir[0], -dir[1], lastMove);
+            if (count >= 3) {
+                return true;
+            }
         }
 
         return false;

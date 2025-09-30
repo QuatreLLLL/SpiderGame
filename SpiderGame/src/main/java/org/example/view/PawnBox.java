@@ -9,7 +9,6 @@ public class PawnBox extends JLayeredPane {
 
     public static final int BOX_WIDTH = 150;
     public static final int BOX_HEIGHT = 450;
-    public static final int ARC_PARAMETER = 50;
 
     public static final int BOX_PADDING = 25;
     public static final int BOX_MARGIN = 100;
@@ -72,13 +71,13 @@ public class PawnBox extends JLayeredPane {
         Graphics2D graphics2D2 = (Graphics2D) graphics;
         graphics2D2.setColor(this.borderColor);
         graphics2D2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics2D2.fillRoundRect(0, 0, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT, PawnBox.ARC_PARAMETER, PawnBox.ARC_PARAMETER);
+        graphics2D2.fillRoundRect(0, 0, PawnBox.BOX_WIDTH, PawnBox.BOX_HEIGHT, GameView.BORDER_RADIUS, GameView.BORDER_RADIUS);
 
         Graphics2D graphics2D1 = (Graphics2D) graphics;
         graphics2D1.setColor(this.innerColor);
         graphics2D1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D1.fillRoundRect(PawnBox.BOX_PADDING, PawnBox.BOX_PADDING,
                 PawnBox.BOX_WIDTH - 2 * PawnBox.BOX_PADDING, PawnBox.BOX_HEIGHT - 2 * PawnBox.BOX_PADDING,
-                PawnBox.ARC_PARAMETER, PawnBox.ARC_PARAMETER);
+                GameView.BORDER_RADIUS, GameView.BORDER_RADIUS);
     }
 }

@@ -2,16 +2,14 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Player {
 
-    private final int PLAYER_PAWNS_NUMBER = 3;
+    private static final int PLAYER_PAWNS_NUMBER = 3;
 
-    private int id;
+    private final int id;
 
-    private List<Pawn> pawns;
+    private final List<Pawn> pawns;
 
     public Player(int id) {
         this.id = id;
@@ -21,15 +19,15 @@ public class Player {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public List<Pawn> getPawns() {
-        return pawns;
+        return this.pawns;
     }
 
     public void createPawns() {
-        for (int i = 0; i < PLAYER_PAWNS_NUMBER; i++) {
+        for (int i = 0; i < Player.PLAYER_PAWNS_NUMBER; i++) {
             this.pawns.add(new Pawn(i, this.id));
         }
     }

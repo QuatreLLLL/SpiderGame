@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Cell {
 
-    private int rowId;
-    private int columnId;
+    private final int rowId;
+    private final int columnId;
 
     private boolean status;
 
@@ -24,11 +24,11 @@ public class Cell {
     }
 
     public int getRowId() {
-        return rowId;
+        return this.rowId;
     }
 
     public int getColumnId() {
-        return columnId;
+        return this.columnId;
     }
 
     public Pawn getPawn() {
@@ -36,7 +36,7 @@ public class Cell {
     }
 
     public List<Cell> getNeighborhood() {
-        return neighborhood;
+        return this.neighborhood;
     }
 
     public void setPawn(Pawn pawn) {

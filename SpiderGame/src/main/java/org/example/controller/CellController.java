@@ -5,9 +5,9 @@ import org.example.view.CellView;
 
 public class CellController {
 
-    private Cell cell;
+    private final Cell cell;
 
-    private CellView cellView;
+    private final CellView cellView;
 
     public CellController(Cell cell, CellView cellView) {
         this.cell = cell;

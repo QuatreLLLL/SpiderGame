@@ -8,16 +8,15 @@ import org.example.view.GameView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GameController {
 
-    private Game game;
+    private final Game game;
 
-    private GameView gameView;
+    private final GameView gameView;
 
-    private GridController gridController;
-    private List<PlayerController> playerControllers;
+    private final GridController gridController;
+    private final List<PlayerController> playerControllers;
 
 
     public GameController(GridController gridController, PlayerController playerController1,
@@ -78,7 +77,7 @@ public class GameController {
     }
 
     public void display() {
-        gameView.display();
+        this.gameView.display();
     }
 
 }

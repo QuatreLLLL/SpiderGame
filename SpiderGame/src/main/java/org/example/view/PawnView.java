@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 public class PawnView extends JLayeredPane {
 
-    private final static int PAWN_PADDING = 5;
+    private static final int PAWN_PADDING = 5;
     public static final int RADIUS = 45;
 
     private final int x;

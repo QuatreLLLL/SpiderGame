@@ -9,14 +9,10 @@ public class GridView extends JLayeredPane {
 
     public static final int GRID_SIZE = 350;
     public static final int GRID_PADDING = 25;
-    public static final int ARC_PARAMETER = 50;
 
     private final List<CellView> cells;
 
     private final Color gridColor;
-
-    private int x;
-    private int y;
 
     public GridView() {
         this.cells = new ArrayList<>();
@@ -28,12 +24,9 @@ public class GridView extends JLayeredPane {
         return this.cells;
     }
 
-    public void iniatialize(int x, int y) {
-        this.x = x;
-        this.y = y;
-
+    public void initialize(int x, int y) {
         this.setLayout(null);
-        this.setBounds((this.x - GridView.GRID_SIZE) / 2, (this.y - GridView.GRID_SIZE) / 2,
+        this.setBounds((x - GridView.GRID_SIZE) / 2, (y - GridView.GRID_SIZE) / 2,
                 GridView.GRID_SIZE, GridView.GRID_SIZE);
     }
 
@@ -59,7 +52,7 @@ public class GridView extends JLayeredPane {
         Graphics2D g2d = (Graphics2D) graphics;
         g2d.setColor(this.gridColor);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.fillRoundRect(0, 0, GridView.GRID_SIZE, GridView.GRID_SIZE, GridView.ARC_PARAMETER,
-                GridView.ARC_PARAMETER);
+        g2d.fillRoundRect(0, 0, GridView.GRID_SIZE, GridView.GRID_SIZE, GameView.BORDER_RADIUS,
+                GameView.BORDER_RADIUS);
     }
 }

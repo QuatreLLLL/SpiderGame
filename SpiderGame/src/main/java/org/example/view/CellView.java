@@ -6,13 +6,9 @@ import java.awt.*;
 public class CellView extends JLayeredPane {
 
     public static final int CELL_SIZE = 100;
-    public static final int ARC_PARAMETER = 50;
 
-    private int x;
-    private int y;
-
-    private int rowId;
-    private int columnId;
+    private final int rowId;
+    private final int columnId;
 
     private final Color borderColor;
     private final Color innerColor;
@@ -20,16 +16,14 @@ public class CellView extends JLayeredPane {
     private boolean status;
 
     public CellView(int x, int y, int rowId, int columnId) {
-        this.x = x;
-        this.y = y;
         this.rowId = rowId;
-        this.columnId =columnId;
+        this.columnId = columnId;
         this.borderColor = GameColor.LIGHT_ASPHALT.get();
         this.innerColor = GameColor.DARK_ASPHALT.get();
         this.status = false;
 
         this.setLayout(null);
-        this.setBounds(this.x, this.y, CellView.CELL_SIZE, CellView.CELL_SIZE);
+        this.setBounds(x, y, CellView.CELL_SIZE, CellView.CELL_SIZE);
         this.setOpaque(false);
     }
 
@@ -53,7 +47,7 @@ public class CellView extends JLayeredPane {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         graphics.setColor(this.innerColor);
-        graphics.fillRoundRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE, CellView.ARC_PARAMETER, CellView.ARC_PARAMETER);
+        graphics.fillRoundRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE, GameView.BORDER_RADIUS, GameView.BORDER_RADIUS);
         graphics.setColor(this.borderColor);
         graphics.drawRect(0, 0, CellView.CELL_SIZE, CellView.CELL_SIZE);
     }
