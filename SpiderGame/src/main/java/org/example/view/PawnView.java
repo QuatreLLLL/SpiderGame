@@ -13,9 +13,6 @@ public class PawnView extends JLayeredPane {
     private static final int PAWN_PADDING = 5;
     public static final int RADIUS = 45;
 
-    private final int x;
-    private final int y;
-
     private final int id;
 
     private final Color color;
@@ -28,7 +25,7 @@ public class PawnView extends JLayeredPane {
     private Point currentLocation;
 
     private boolean listenersEnabled;
-    private boolean isSelected;
+    private boolean selected;
 
     private Optional<int[]> cellId;
 
@@ -37,14 +34,12 @@ public class PawnView extends JLayeredPane {
     private Consumer<Point> onMouseDragged;
 
     public PawnView(int x, int y, Color color, int id) {
-        this.x = x;
-        this.y = y;
         this.color = color;
         this.id = id;
-        this.isSelected = false;
+        this.selected = false;
 
         this.setLayout(null);
-        this.setBounds(this.x, this.y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
+        this.setBounds(x, y, 2 * PawnView.RADIUS, 2 * PawnView.RADIUS);
         this.setOpaque(false);
 
         this.addMouseListener(new MouseAdapter() {
@@ -82,7 +77,7 @@ public class PawnView extends JLayeredPane {
     }
 
     public boolean isSelected() {
-        return this.isSelected;
+        return this.selected;
     }
 
     public Optional<int[]> getCellId() {
@@ -126,7 +121,7 @@ public class PawnView extends JLayeredPane {
     }
 
     public void startDrag() {
-        this.isSelected = true;
+        this.selected = true;
         this.rootLayer = SwingUtilities.getRootPane(this).getLayeredPane();
 
         Point p = SwingUtilities.convertPoint(
