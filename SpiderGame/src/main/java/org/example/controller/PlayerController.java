@@ -40,6 +40,10 @@ public class PlayerController extends MouseAdapter {
         return this.pawnBox;
     }
 
+    public List<PawnController> getPawns() {
+        return this.pawns;
+    }
+
     public Optional<PawnController> getSelectedPawn() {
         return this.selectedPawn;
     }
