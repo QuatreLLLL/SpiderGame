@@ -47,7 +47,6 @@ public class GameController {
         this.gameView.getMenu().getPlayerOrder().setForeground(waitingPlayer.get().getPawnBox().getPawns().get(0)
                 .getColor());
         this.playerControllers.forEach(PlayerController::updatePlayingStatus);
-        this.gameView.getMenu().getUndoButton().setEnabled(true);
     }
 
     public void handleRestartButtonPressed() {
@@ -63,6 +62,7 @@ public class GameController {
             playerController.findSelectedPawn().ifPresent(pawnController ->
                     pawnController.getPawnView().undoMove());
         });
+        this.gameView.getMenu().getValidateButton().setEnabled(false);
         this.gameView.getMenu().getUndoButton().setEnabled(false);
     }
 
@@ -83,12 +83,12 @@ public class GameController {
 
     public void validateMove(PlayerController playerController) {
         this.gridController.getGridView().getCells().forEach(cellView -> cellView.setStatus(false));
-        playerController.findSelectedPawn().ifPresent(pawnController ->
-                this.game.updatePosition(pawnController.getPawn(), playerController.findSelectedCellId()));
         this.gameView.getMenu().getValidateButton().setEnabled(false);
         this.gameView.getMenu().getUndoButton().setEnabled(false);
-        playerController.findSelectedPawn().ifPresent(pawnController -> pawnController.getPawnView()
-                .updateParent());
+        playerController.findSelectedPawn().ifPresent(pawnController -> {
+            this.game.updatePosition(pawnController.getPawn(), pawnController.getPawnView().getCellId());
+            pawnController.getPawnView().updateParent();
+        });
     }
 
     public void run() {

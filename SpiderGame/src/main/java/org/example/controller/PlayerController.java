@@ -18,10 +18,6 @@ public class PlayerController extends MouseAdapter {
 
     private boolean isPlaying = false;
 
-    private PawnController selectedPawn;
-
-    private int[] selectedCell;
-
     public PlayerController(int id, boolean isPlaying) {
         this.player = new Player(id);
         this.pawnBox = new PawnBox(id);
@@ -75,11 +71,8 @@ public class PlayerController extends MouseAdapter {
     }
 
     public Optional<PawnController> findSelectedPawn() {
-        return this.pawnControllers.stream().filter(pawnController -> pawnController.getPawnView().isSelected())
+        return this.pawnControllers.stream()
+                .filter(pawnController -> pawnController.getPawnView().isSelected())
                 .findFirst();
-    }
-
-    public int[] findSelectedCellId() {
-        return this.findSelectedPawn().get().getPawnView().getCellId();
     }
 }

@@ -99,6 +99,7 @@ public class PawnView extends JLayeredPane {
     public void updateParent() {
         this.formerParent = this.currentParent;
         this.formerLocation = this.currentLocation;
+        this.selected = false;
     }
 
     public void undoMove() {
@@ -107,6 +108,7 @@ public class PawnView extends JLayeredPane {
         this.formerParent.add(this, JLayeredPane.DRAG_LAYER);
         this.currentParent = this.formerParent;
         this.currentLocation = this.formerLocation;
+        this.selected = false;
     }
 
     public void setCurrentLocation(Point currentLocation) {
