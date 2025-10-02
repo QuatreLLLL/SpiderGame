@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class Game {
 
-    private static final int GRID_PAWNS_NUMBER = 6;
+    public static final int GRID_PAWNS_NUMBER = 6;
 
     private final List<Player> players;
     private final List<Pawn> pawns;
@@ -28,6 +28,10 @@ public class Game {
 
     public Grid getGrid() {
         return this.grid;
+    }
+
+    public List<Pawn> getPawns() {
+        return this.pawns;
     }
 
     public List<Cell> defineLegalMoves(Pawn pawn) {
@@ -64,7 +68,7 @@ public class Game {
     }
 
     public boolean isOver(Pawn lastMove) {
-        if (lastMove == null) {
+        if (lastMove == null || this.pawns.size() < GRID_PAWNS_NUMBER - 1) {
             return false;
         }
 
@@ -88,5 +92,11 @@ public class Game {
         }
 
         return false;
+    }
+
+    public void restart() {
+        this.grid.getCells().forEach(cell -> cell.setPawn(null));
+        this.pawns.forEach(pawn -> pawn.setPosition(null));
+        this.pawns.clear();
     }
 }

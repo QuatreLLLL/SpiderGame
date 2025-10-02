@@ -30,12 +30,8 @@ public class Pawn {
         this.position = position;
     }
 
-    public boolean isPlayable(Player player) {
-        return this.symbol == player.getId();
-    }
-
-    public boolean isOnGrid() {
-        return this.position != null;
+    public boolean isMovable(Player player) {
+        return this.position == null || player.countPlayedPawns() == Player.PLAYER_PAWNS_NUMBER;
     }
 }
 

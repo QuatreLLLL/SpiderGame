@@ -27,6 +27,7 @@ public class GameView extends JFrame {
     private final Menu menu;
 
     private Runnable onValidateButtonPressed;
+    private Runnable onRestartButtonPressed;
 
     public GameView(GridView gridView, PawnBox pawnBox1, PawnBox pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -36,22 +37,12 @@ public class GameView extends JFrame {
         this.pawnBox1 = pawnBox1;
         this.pawnBox2 = pawnBox2;
         this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
-
-        this.menu.getValidateButton().addActionListener(event -> {
-            if (GameView.this.onValidateButtonPressed != null) {
-                GameView.this.onValidateButtonPressed.run();
-            }
-        });
+        this.menu.getPlayerOrder().setForeground(GameColor.BLUE.get());
     }
 
     public Menu getMenu() {
         return this.menu;
     }
-
-    public void setOnValidateButtonPressed(Runnable handler) {
-        this.onValidateButtonPressed = handler;
-    }
-
 
     public void initialize() {
 
@@ -80,14 +71,19 @@ public class GameView extends JFrame {
         this.panel.add(this.menu);
     }
 
+    public void restart() {
+        this.pawnBox1.restart();
+        this.pawnBox2.restart();
+    }
+
     public void display() {
         this.setPreferredSize(new Dimension(this.width, this.height));
         this.setResizable(false);
         this.setLayout(null);
-
         this.initialize();
         this.pack();
         this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
 

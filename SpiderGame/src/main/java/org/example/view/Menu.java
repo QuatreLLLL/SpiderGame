@@ -18,25 +18,38 @@ public class Menu extends JPanel {
     private static final int BUTTON_HEIGHT = 50;
 
     private static final Color MENU_COLOR = GameColor.LIGHT_ASPHALT.get();
-    private static final Color DEFAULT_COLOR_BUTTON = Color.GREEN;
-    private static final Color DANGER_COLOR_BUTTON = Color.RED;
     private final JButton validateButton;
     private final JButton undoButton;
     private final JButton restartButton;
     private final JLabel playerOrder;
+
+    private Runnable onValidateButtonPressed;
+    private Runnable onRestartButtonPressed;
 
 
     public Menu(int x, int y) {
         this.validateButton = new JButton("Validate");
         this.undoButton = new JButton("Undo");
         this.restartButton = new JButton("Restart");
-        this.playerOrder = new JLabel("Player 1");
+        this.playerOrder = new JLabel("Player");
 
         this.setLayout(null);
         this.setBounds((x - Menu.MENU_WIDTH) / 2, y - Menu.MENU_HEIGHT + Menu.MENU_MARGIN,
                 Menu.MENU_WIDTH, Menu.MENU_HEIGHT);
         this.setOpaque(false);
         this.initialize();
+
+        this.validateButton.addActionListener(event -> {
+            if (Menu.this.onValidateButtonPressed != null) {
+                Menu.this.onValidateButtonPressed.run();
+            }
+        });
+
+        this.restartButton.addActionListener(event -> {
+            if (Menu.this.onRestartButtonPressed != null) {
+                Menu.this.onRestartButtonPressed.run();
+            }
+        });
     }
 
     public JButton getValidateButton() {
@@ -45,6 +58,22 @@ public class Menu extends JPanel {
 
     public JButton getUndoButton() {
         return this.undoButton;
+    }
+
+    public JButton getRestartButton() {
+        return this.restartButton;
+    }
+
+    public JLabel getPlayerOrder() {
+        return this.playerOrder;
+    }
+
+    public void setOnValidateButtonPressed(Runnable handler) {
+        this.onValidateButtonPressed = handler;
+    }
+
+    public void setOnRestartButtonPressed(Runnable handler) {
+        this.onRestartButtonPressed = handler;
     }
 
     public void initialize() {

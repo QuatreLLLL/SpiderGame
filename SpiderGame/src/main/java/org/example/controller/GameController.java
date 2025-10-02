@@ -2,7 +2,6 @@ package org.example.controller;
 
 import org.example.model.Cell;
 import org.example.model.Game;
-import org.example.model.Pawn;
 import org.example.view.GameView;
 
 import java.util.ArrayList;
@@ -19,52 +18,60 @@ public class GameController {
     private final List<PlayerController> playerControllers;
 
 
-    public GameController(GridController gridController, PlayerController playerController1,
-                          PlayerController playerController2) {
-        this.gridController = gridController;
+    public GameController() {
+        this.gridController = new GridController();
         this.playerControllers = new ArrayList<>();
-        this.playerControllers.add(playerController1);
-        this.playerControllers.add(playerController2);
+        this.playerControllers.add(new PlayerController(0, true));
+        this.playerControllers.add(new PlayerController(1, false));
         this.game = new Game();
-        this.gameView = new GameView(gridController.getGridView(), playerController1.getPawnBox(),
-                playerController2.getPawnBox());
+        this.gameView = new GameView(this.gridController.getGridView(), playerControllers.get(0).getPawnBox(),
+                playerControllers.get(this.playerControllers.size() - 1).getPawnBox());
 
-
-        this.gameView.setOnValidateButtonPressed(this::handleValidateButtonPressed);
+        this.gameView.getMenu().setOnValidateButtonPressed(this::handleValidateButtonPressed);
+        this.gameView.getMenu().setOnRestartButtonPressed(this::handleRestartButtonPressed);
     }
 
     public void handleValidateButtonPressed() {
         Optional<PlayerController> playingPlayer = this.playerControllers.stream()
-                .filter(PlayerController::isPlaying).findFirst();
-        playingPlayer.ifPresent(playerController -> {
-            this.validateMove(playerController);
-            playerController.setPlaying(false);
-        });
+                                                                .filter(PlayerController::isPlaying).findFirst();
+        Optional<PlayerController> waitingPlayer = this.playerControllers.stream()
+                .filter(playerController -> !playerController.isPlaying()).findFirst();
+
+        playingPlayer.ifPresent(this::validateMove);
+        this.gameView.getMenu().getPlayerOrder().setForeground(waitingPlayer.get().getPawnBox().getPawns().get(0)
+                .getColor());
+        this.playerControllers.forEach(PlayerController::setPlaying);
+    }
+
+    public void handleRestartButtonPressed() {
+        this.game.restart();
+        this.gameView.restart();
     }
 
     public void movePawn(PlayerController playerController) {
         playerController.registerPawnListeners();
         playerController.findSelectedPawn();
-        Optional<PawnController> pawnSelected = playerController.getSelectedPawn();
+        Optional<PawnController> pawnSelected = playerController.findSelectedPawn();
         pawnSelected.ifPresent(pawnController -> {
             for (Cell cell : this.game.defineLegalMoves(pawnController.getPawn())) {
-                gridController.getCells().get(gridController.getGrid().getCells().indexOf(cell)).setCellStatus(true);
+                this.gridController.getCells().get(this.gridController.getGrid().getCells().indexOf(cell))
+                        .setCellStatus(true);
             }
 
-            playerController.findSelectedCell();
-            Optional<int[]> cellId = playerController.getSelectedCell();
+            Optional<int[]> cellId = playerController.findSelectedCellId();
             cellId.ifPresent(cell -> playerController.unregisterPawnListeners());
         });
     }
 
     public void validateMove(PlayerController playerController) {
-        playerController.getSelectedPawn().ifPresent(pawnController ->
+        this.gridController.getGridView().getCells().forEach(cellView -> cellView.setStatus(false));
+        playerController.findSelectedPawn().ifPresent(pawnController ->
                 this.game.updatePosition(pawnController.getPawn(),
-                        playerController.getSelectedCell().get()));
+                        playerController.findSelectedCellId().get()));
     }
 
     public void play() {
-        Pawn lastMove = null;
+/*        Pawn lastMove = null;
         while (this.game.isOver(lastMove)) {
             for (PlayerController playerController : this.playerControllers) {
                 playerController.setPlaying(true);
@@ -73,10 +80,10 @@ public class GameController {
                 }
                 lastMove = playerController.getSelectedPawn().get().getPawn();
             }
-        }
+        }*/
     }
 
-    public void display() {
+    public void run() {
         this.gameView.display();
     }
 

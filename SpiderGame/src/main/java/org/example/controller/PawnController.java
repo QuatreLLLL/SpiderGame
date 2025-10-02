@@ -44,7 +44,7 @@ public class PawnController {
         this.pawnView.getRootLayer().remove(this.pawnView);
         this.pawnView.getRootLayer().repaint();
 
-        if (cell != null && cell.getStatus()) {
+        if (cell != null) {
             this.pawnView.snapToCell(cell);
         } else {
             this.pawnView.cancelMove();

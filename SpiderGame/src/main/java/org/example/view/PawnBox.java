@@ -31,7 +31,7 @@ public class PawnBox extends JLayeredPane {
         this.playerId = playerId;
         this.innerColor = GameColor.DARK_ASPHALT.get();
         this.borderColor = GameColor.LIGHT_ASPHALT.get();
-        this.playerColor = this.playerId == 1 ? GameColor.BLUE.get() : GameColor.RED.get();
+        this.playerColor = this.playerId == 0 ? GameColor.BLUE.get() : GameColor.RED.get();
         this.createPawnBox();
     }
 
@@ -55,6 +55,22 @@ public class PawnBox extends JLayeredPane {
             this.add(pawn, JLayeredPane.DEFAULT_LAYER);
             this.pawns.add(pawn);
         }
+    }
+
+    public void restart() {
+        for (int i = 0; i < PawnBox.PAWN_NUMBER; i++) {
+            int PAWN_OFFSET = ((PawnBox.BOX_HEIGHT - 2 * PawnBox.BOX_PADDING) / (PawnBox.PAWN_NUMBER));
+            PawnView pawn = this.pawns.get(i);
+            if (pawn.getCurrentParent() != null) {
+                pawn.getCurrentParent().remove(pawn);
+                pawn.getCurrentParent().repaint();
+                pawn.setLocation(PawnBox.BOX_WIDTH / 2 - PawnView.RADIUS,
+                        PawnBox.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS);
+                this.add(pawn);
+            }
+        }
+        this.revalidate();
+        this.repaint();
     }
 
 /*    public void initializePawns() {

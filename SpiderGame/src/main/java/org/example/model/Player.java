@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Player {
 
-    private static final int PLAYER_PAWNS_NUMBER = 3;
+    public static final int PLAYER_PAWNS_NUMBER = 3;
 
     private final int id;
 
@@ -30,6 +30,16 @@ public class Player {
         for (int i = 0; i < Player.PLAYER_PAWNS_NUMBER; i++) {
             this.pawns.add(new Pawn(i, this.id));
         }
+    }
+
+    public int countPlayedPawns() {
+        int count = 0;
+        for (Pawn pawn : this.pawns) {
+            if (pawn.getPosition() != null) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public Pawn selectPawn(Pawn pawn) {

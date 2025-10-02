@@ -88,12 +88,20 @@ public class PawnView extends JLayeredPane {
         return this.rootLayer;
     }
 
+    public Container getCurrentParent() {
+        return this.currentParent;
+    }
+
     public void setCurrentParent(Container currentParent) {
         this.currentParent = currentParent;
     }
 
     public void setCurrentLocation(Point currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public Color getColor() {
+        return this.color;
     }
 
     public void enableListeners() {
@@ -124,7 +132,7 @@ public class PawnView extends JLayeredPane {
         this.selected = true;
         this.rootLayer = SwingUtilities.getRootPane(this).getLayeredPane();
 
-        Point p = SwingUtilities.convertPoint(
+        Point point = SwingUtilities.convertPoint(
                 this.currentParent,
                 this.currentLocation,
                 this.rootLayer
@@ -132,7 +140,7 @@ public class PawnView extends JLayeredPane {
 
         this.currentParent.remove(this);
         this.rootLayer.add(this, JLayeredPane.DRAG_LAYER);
-        this.setLocation(p);
+        this.setLocation(point);
         this.rootLayer.repaint();
     }
 
@@ -161,6 +169,7 @@ public class PawnView extends JLayeredPane {
         cell.revalidate();
         cell.repaint();
 
+        this.formerParent = this.currentParent;
         this.currentParent = cell;
     }
 

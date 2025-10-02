@@ -18,15 +18,15 @@ public class PlayerController extends MouseAdapter {
 
     private boolean isPlaying;
 
-    private Optional<PawnController> selectedPawn;
+    private PawnController selectedPawn;
 
-    private Optional<int[]> selectedCell;
+    private int[] selectedCell;
 
-    public PlayerController(int id) {
+    public PlayerController(int id, boolean isPlaying) {
         this.player = new Player(id);
         this.pawnBox = new PawnBox(id);
         this.pawns = new ArrayList<>();
-        this.isPlaying = false;
+        this.isPlaying = isPlaying;
 
         this.createPawnControllers();
         this.registerPawnListeners();
@@ -44,20 +44,12 @@ public class PlayerController extends MouseAdapter {
         return this.pawns;
     }
 
-    public Optional<PawnController> getSelectedPawn() {
-        return this.selectedPawn;
-    }
-
-    public Optional<int[]> getSelectedCell() {
-        return this.selectedCell;
-    }
-
     public boolean isPlaying() {
         return this.isPlaying;
     }
 
-    public void setPlaying(boolean playing) {
-        this.isPlaying = playing;
+    public void setPlaying() {
+        this.isPlaying = !this.isPlaying;
     }
 
     private void createPawnControllers() {
@@ -67,20 +59,23 @@ public class PlayerController extends MouseAdapter {
     }
 
     public void registerPawnListeners() {
-        this.pawns.forEach(pawnController -> pawnController.getPawnView().enableListeners());
+        for (PawnController pawnController : this.pawns) {
+            if (pawnController.getPawn().isMovable(this.player)) {
+                pawnController.getPawnView().enableListeners();
+            }
+        }
     }
 
     public void unregisterPawnListeners() {
         this.pawns.forEach(pawnController -> pawnController.getPawnView().disableListeners());
     }
 
-    public void findSelectedPawn() {
-       this.selectedPawn = this.pawns.stream()
-                .filter(pawnController -> pawnController.getPawnView().isSelected()).findFirst();
+    public Optional<PawnController> findSelectedPawn() {
+        return this.pawns.stream().filter(pawnController -> pawnController.getPawnView().isSelected())
+                .findFirst();
     }
 
-    public void findSelectedCell() {
-        this.selectedCell = this.selectedPawn.get().getPawnView().getCellId();
+    public Optional<int[]> findSelectedCellId() {
+        return this.findSelectedPawn().get().getPawnView().getCellId();
     }
-
 }
