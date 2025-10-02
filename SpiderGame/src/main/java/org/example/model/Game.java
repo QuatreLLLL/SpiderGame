@@ -1,7 +1,9 @@
 package org.example.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -9,12 +11,12 @@ public class Game {
     public static final int GRID_PAWNS_NUMBER = 6;
 
     private final List<Player> players;
-    private final List<Pawn> pawns;
+    private final Set<Pawn> pawns;
     private final Grid grid;
 
     public Game(Grid grid) {
         this.players = new ArrayList<>();
-        this.pawns = new ArrayList<>();
+        this.pawns = new HashSet<>();
         this.grid = grid;
     }
 
@@ -28,10 +30,6 @@ public class Game {
 
     public Grid getGrid() {
         return this.grid;
-    }
-
-    public List<Pawn> getPawns() {
-        return this.pawns;
     }
 
     public List<Cell> getLegalMoves(Pawn pawn) {
@@ -59,7 +57,8 @@ public class Game {
         int y = column + dy;
 
         while (x >= 0 && x < Grid.GRID_SIZE && y >= 0 && y < Grid.GRID_SIZE
-                && this.grid.getCells().get(x + y).getPawn().getSymbol() == pawn.getSymbol()) {
+                && this.grid.findCell(x, y).getPawn() != null
+                && this.grid.findCell(x, y).getPawn().getSymbol() == pawn.getSymbol()) {
             count++;
             x += dx;
             y += dy;
@@ -68,7 +67,7 @@ public class Game {
     }
 
     public boolean isOver(Pawn lastMove) {
-        if (lastMove == null || this.pawns.size() < GRID_PAWNS_NUMBER - 1) {
+        if (this.pawns.size() < Game.GRID_PAWNS_NUMBER - 1) {
             return false;
         }
 

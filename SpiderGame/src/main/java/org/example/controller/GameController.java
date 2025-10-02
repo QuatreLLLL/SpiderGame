@@ -40,12 +40,13 @@ public class GameController {
     public void handleValidateButtonPressed() {
         Optional<PlayerController> playingPlayer = this.playerControllers.stream()
                                                                 .filter(PlayerController::isPlaying).findFirst();
-        Optional<PlayerController> waitingPlayer = this.playerControllers.stream()
-                .filter(playerController -> !playerController.isPlaying()).findFirst();
+        this.playerControllers.stream()
+                .filter(playerController -> !playerController.isPlaying()).findFirst()
+                .ifPresent(playerController ->
+                        this.gameView.updateLabelColor(this.gameView.getMenu().getPlayerOrder(),
+                                playerController.getPawnBox()));
 
         playingPlayer.ifPresent(this::validateMove);
-        this.gameView.getMenu().getPlayerOrder().setForeground(waitingPlayer.get().getPawnBox().getPawns().get(0)
-                .getColor());
         this.playerControllers.forEach(PlayerController::updatePlayingStatus);
     }
 
@@ -87,7 +88,13 @@ public class GameController {
         this.gameView.getMenu().getUndoButton().setEnabled(false);
         playerController.findSelectedPawn().ifPresent(pawnController -> {
             this.game.updatePosition(pawnController.getPawn(), pawnController.getPawnView().getCellId());
+            this.game.addPawn(pawnController.getPawn());
             pawnController.getPawnView().updateParent();
+            if (this.game.isOver(pawnController.getPawn())) {
+                this.gameView.updateLabelColor(this.gameView.getLabel(), playerController.getPawnBox());
+                this.gameView.showComponent(this.gameView.getDialog());
+                this.gameView.showComponent(this.gameView.getMenu().getRestartButton());
+            }
         });
     }
 

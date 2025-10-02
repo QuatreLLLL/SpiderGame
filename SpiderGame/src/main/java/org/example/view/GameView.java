@@ -14,6 +14,9 @@ public class GameView extends JFrame {
     private static final int TITLE_HEIGHT = 100;
     private static final int TITLE_FONT_SIZE = 28;
 
+    private static final int DIALOG_WIDTH = 400;
+    private static final int DIALOG_HEIGHT = 400;
+
     private static final double GAMEBOARD_COEFFICIENT = 0.7;
     private static final double MENU_COEFFICIENT = 0.8;
 
@@ -25,9 +28,9 @@ public class GameView extends JFrame {
     private final PawnBox pawnBox1;
     private final PawnBox pawnBox2;
     private final Menu menu;
-
-    private Runnable onValidateButtonPressed;
-    private Runnable onRestartButtonPressed;
+    private final JLabel gameTitle;
+    private final JDialog dialog;
+    private final JLabel label;
 
     public GameView(GridView gridView, PawnBox pawnBox1, PawnBox pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -36,12 +39,23 @@ public class GameView extends JFrame {
         this.gridView = gridView;
         this.pawnBox1 = pawnBox1;
         this.pawnBox2 = pawnBox2;
+        this.gameTitle = new JLabel("SPIDER GAME");
         this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
         this.menu.getPlayerOrder().setForeground(GameColor.BLUE.get());
+        this.dialog = new JDialog(this);
+        this.label = new JLabel("Player win");
     }
 
     public Menu getMenu() {
         return this.menu;
+    }
+
+    public JDialog getDialog() {
+        return this.dialog;
+    }
+
+    public JLabel getLabel() {
+        return this.label;
     }
 
     public void initialize() {
@@ -62,18 +76,34 @@ public class GameView extends JFrame {
                 (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(this.pawnBox2, JLayeredPane.DEFAULT_LAYER);
 
-        JLabel gameTitle = new JLabel("SPIDER GAME");
-        gameTitle.setBounds((this.panel.getWidth() - GameView.TITLE_WIDTH) / 2, GameView.LABEL_MARGIN,
+        this.gameTitle.setBounds((this.panel.getWidth() - GameView.TITLE_WIDTH) / 2, GameView.LABEL_MARGIN,
                 GameView.TITLE_WIDTH, GameView.TITLE_HEIGHT);
-        gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        gameTitle.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
-        this.panel.add(gameTitle);
+        this.gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        this.gameTitle.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
+
+        this.dialog.setBounds((this.width - GameView.DIALOG_WIDTH) / 2,
+                (this.height - GameView.DIALOG_HEIGHT) / 2, GameView.DIALOG_WIDTH, GameView.DIALOG_HEIGHT);
+        this.label.setBounds((GameView.DIALOG_WIDTH - 100) / 2, (GameView.DIALOG_HEIGHT - 50) / 2, 100, 50);
+        this.label.setHorizontalAlignment(SwingConstants.CENTER);
+        this.label.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
+        this.dialog.add(this.label);
+        this.dialog.setVisible(false);
+
+        this.panel.add(this.gameTitle);
         this.panel.add(this.menu);
     }
 
     public void restart() {
         this.pawnBox1.restart();
         this.pawnBox2.restart();
+    }
+
+    public void showComponent(Component component) {
+        component.setVisible(true);
+    }
+
+    public void updateLabelColor(JLabel label, PawnBox pawnBox) {
+        label.setForeground(pawnBox.getPawns().get(0).getColor());
     }
 
     public void display() {
