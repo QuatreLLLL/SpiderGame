@@ -23,7 +23,7 @@ public class CellController {
     }
 
     public void setCellStatus(boolean status) {
-        cellView.setStatus(status);
+        this.cellView.setStatus(status);
     }
 
 }

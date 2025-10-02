@@ -17,18 +17,24 @@ public class GameController {
     private final GridController gridController;
     private final List<PlayerController> playerControllers;
 
-
     public GameController() {
         this.gridController = new GridController();
         this.playerControllers = new ArrayList<>();
         this.playerControllers.add(new PlayerController(0, true));
         this.playerControllers.add(new PlayerController(1, false));
-        this.game = new Game();
-        this.gameView = new GameView(this.gridController.getGridView(), playerControllers.get(0).getPawnBox(),
-                playerControllers.get(this.playerControllers.size() - 1).getPawnBox());
+        this.game = new Game(this.gridController.getGrid());
+        this.playerControllers.stream()
+                .flatMap(playerController -> playerController.getPawnControllers().stream())
+                .forEach(pawnController -> {
+                    pawnController.setLegalMovesUpdater(this::updateLegalMoves);
+                    pawnController.setPawnPlacementHandler(this::handlePawnPlacement);
+                });
+        this.gameView = new GameView(this.gridController.getGridView(), this.playerControllers.get(0).getPawnBox(),
+                this.playerControllers.get(this.playerControllers.size() - 1).getPawnBox());
 
         this.gameView.getMenu().setOnValidateButtonPressed(this::handleValidateButtonPressed);
         this.gameView.getMenu().setOnRestartButtonPressed(this::handleRestartButtonPressed);
+        this.gameView.getMenu().setOnUndoButtonPressed(this::handleUndoButtonPressed);
     }
 
     public void handleValidateButtonPressed() {
@@ -40,7 +46,8 @@ public class GameController {
         playingPlayer.ifPresent(this::validateMove);
         this.gameView.getMenu().getPlayerOrder().setForeground(waitingPlayer.get().getPawnBox().getPawns().get(0)
                 .getColor());
-        this.playerControllers.forEach(PlayerController::setPlaying);
+        this.playerControllers.forEach(PlayerController::updatePlayingStatus);
+        this.gameView.getMenu().getUndoButton().setEnabled(true);
     }
 
     public void handleRestartButtonPressed() {
@@ -48,39 +55,40 @@ public class GameController {
         this.gameView.restart();
     }
 
-    public void movePawn(PlayerController playerController) {
-        playerController.registerPawnListeners();
-        playerController.findSelectedPawn();
-        Optional<PawnController> pawnSelected = playerController.findSelectedPawn();
-        pawnSelected.ifPresent(pawnController -> {
-            for (Cell cell : this.game.defineLegalMoves(pawnController.getPawn())) {
-                this.gridController.getCells().get(this.gridController.getGrid().getCells().indexOf(cell))
-                        .setCellStatus(true);
-            }
-
-            Optional<int[]> cellId = playerController.findSelectedCellId();
-            cellId.ifPresent(cell -> playerController.unregisterPawnListeners());
+    public void handleUndoButtonPressed() {
+        Optional<PlayerController> playingPlayer = this.playerControllers.stream().filter(PlayerController::isPlaying)
+                .findFirst();
+        playingPlayer.ifPresent(playerController -> {
+            playerController.registerPawnListeners();
+            playerController.findSelectedPawn().ifPresent(pawnController ->
+                    pawnController.getPawnView().undoMove());
         });
+        this.gameView.getMenu().getUndoButton().setEnabled(false);
+    }
+
+    public void updateLegalMoves(PawnController pawnController) {
+        for (Cell cell : this.game.getLegalMoves(pawnController.getPawn())) {
+            this.gridController.getCells().get(this.gridController.getGrid().getCells().indexOf(cell))
+                    .setCellStatus(true);
+        }
+    }
+
+    public void handlePawnPlacement(PawnController pawnController) {
+        this.playerControllers.stream().filter(PlayerController::isPlaying).findFirst()
+                .ifPresent(PlayerController::unregisterPawnListeners);
+        this.gridController.getGridView().resetCellStatus();
+        this.gameView.getMenu().getUndoButton().setEnabled(true);
+        this.gameView.getMenu().getValidateButton().setEnabled(true);
     }
 
     public void validateMove(PlayerController playerController) {
         this.gridController.getGridView().getCells().forEach(cellView -> cellView.setStatus(false));
         playerController.findSelectedPawn().ifPresent(pawnController ->
-                this.game.updatePosition(pawnController.getPawn(),
-                        playerController.findSelectedCellId().get()));
-    }
-
-    public void play() {
-/*        Pawn lastMove = null;
-        while (this.game.isOver(lastMove)) {
-            for (PlayerController playerController : this.playerControllers) {
-                playerController.setPlaying(true);
-                while (playerController.isPlaying()) {
-                    this.movePawn(playerController);
-                }
-                lastMove = playerController.getSelectedPawn().get().getPawn();
-            }
-        }*/
+                this.game.updatePosition(pawnController.getPawn(), playerController.findSelectedCellId()));
+        this.gameView.getMenu().getValidateButton().setEnabled(false);
+        this.gameView.getMenu().getUndoButton().setEnabled(false);
+        playerController.findSelectedPawn().ifPresent(pawnController -> pawnController.getPawnView()
+                .updateParent());
     }
 
     public void run() {

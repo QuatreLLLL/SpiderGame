@@ -14,9 +14,9 @@ public class PlayerController extends MouseAdapter {
 
     private final PawnBox pawnBox;
 
-    private final List<PawnController> pawns;
+    private final List<PawnController> pawnControllers;
 
-    private boolean isPlaying;
+    private boolean isPlaying = false;
 
     private PawnController selectedPawn;
 
@@ -25,11 +25,12 @@ public class PlayerController extends MouseAdapter {
     public PlayerController(int id, boolean isPlaying) {
         this.player = new Player(id);
         this.pawnBox = new PawnBox(id);
-        this.pawns = new ArrayList<>();
-        this.isPlaying = isPlaying;
-
+        this.pawnControllers = new ArrayList<>();
         this.createPawnControllers();
-        this.registerPawnListeners();
+
+        if (isPlaying) {
+            this.updatePlayingStatus();
+        }
     }
 
     public Player getPlayer() {
@@ -40,26 +41,29 @@ public class PlayerController extends MouseAdapter {
         return this.pawnBox;
     }
 
-    public List<PawnController> getPawns() {
-        return this.pawns;
+    public List<PawnController> getPawnControllers() {
+        return this.pawnControllers;
     }
 
     public boolean isPlaying() {
         return this.isPlaying;
     }
 
-    public void setPlaying() {
+    public void updatePlayingStatus() {
         this.isPlaying = !this.isPlaying;
+        if (this.isPlaying) {
+            this.registerPawnListeners();
+        }
     }
 
     private void createPawnControllers() {
         for (int i = 0; i < 3; i++) {
-            this.pawns.add(new PawnController(this.player.getPawns().get(i), this.pawnBox.getPawns().get(i)));
+            this.pawnControllers.add(new PawnController(this.player.getPawns().get(i), this.pawnBox.getPawns().get(i)));
         }
     }
 
     public void registerPawnListeners() {
-        for (PawnController pawnController : this.pawns) {
+        for (PawnController pawnController : this.pawnControllers) {
             if (pawnController.getPawn().isMovable(this.player)) {
                 pawnController.getPawnView().enableListeners();
             }
@@ -67,15 +71,15 @@ public class PlayerController extends MouseAdapter {
     }
 
     public void unregisterPawnListeners() {
-        this.pawns.forEach(pawnController -> pawnController.getPawnView().disableListeners());
+        this.pawnControllers.forEach(pawnController -> pawnController.getPawnView().disableListeners());
     }
 
     public Optional<PawnController> findSelectedPawn() {
-        return this.pawns.stream().filter(pawnController -> pawnController.getPawnView().isSelected())
+        return this.pawnControllers.stream().filter(pawnController -> pawnController.getPawnView().isSelected())
                 .findFirst();
     }
 
-    public Optional<int[]> findSelectedCellId() {
+    public int[] findSelectedCellId() {
         return this.findSelectedPawn().get().getPawnView().getCellId();
     }
 }

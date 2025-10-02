@@ -39,11 +39,14 @@ public class GridView extends JLayeredPane {
                         GridView.GRID_PADDING + i * CellView.CELL_SIZE,
                         CellView.CELL_SIZE,
                         CellView.CELL_SIZE);
-                cellView.addMouseListener(new CellListener(cellView));
                 this.add(cellView, JLayeredPane.DEFAULT_LAYER);
                 this.cells.add(cellView);
             }
         }
+    }
+
+    public void resetCellStatus() {
+        this.cells.forEach(cellView -> cellView.setStatus(false));
     }
 
     @Override

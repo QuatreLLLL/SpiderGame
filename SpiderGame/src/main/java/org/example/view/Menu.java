@@ -9,12 +9,13 @@ public class Menu extends JPanel {
     private static final int MENU_HEIGHT = 200;
 
     private static final int MENU_MARGIN = 100;
-    private static final int LABEL_PADDING = 10;
+    private static final int LABEL_PADDING = 20;
     private static final int BUTTON_PADDING = 20;
 
-    private static final int LABEL_HEIGHT = 20;
+    private static final int LABEL_HEIGHT = 25;
+    private static final int LABEL_FONT_SIZE = 20;
 
-    private static final int BUTTON_WIDTH = 100;
+    private static final int BUTTON_WIDTH = 180;
     private static final int BUTTON_HEIGHT = 50;
 
     private static final Color MENU_COLOR = GameColor.LIGHT_ASPHALT.get();
@@ -25,6 +26,7 @@ public class Menu extends JPanel {
 
     private Runnable onValidateButtonPressed;
     private Runnable onRestartButtonPressed;
+    private Runnable onUndoButtonPressed;
 
 
     public Menu(int x, int y) {
@@ -48,6 +50,12 @@ public class Menu extends JPanel {
         this.restartButton.addActionListener(event -> {
             if (Menu.this.onRestartButtonPressed != null) {
                 Menu.this.onRestartButtonPressed.run();
+            }
+        });
+
+        this.undoButton.addActionListener(event -> {
+            if (Menu.this.onUndoButtonPressed != null) {
+                Menu.this.onUndoButtonPressed.run();
             }
         });
     }
@@ -76,6 +84,10 @@ public class Menu extends JPanel {
         this.onRestartButtonPressed = handler;
     }
 
+    public void setOnUndoButtonPressed(Runnable handler) {
+        this.onUndoButtonPressed = handler;
+    }
+
     public void initialize() {
         this.playerOrder.setBounds(0, Menu.LABEL_PADDING, Menu.MENU_WIDTH, Menu.LABEL_HEIGHT);
         this.playerOrder.setHorizontalAlignment(SwingConstants.CENTER);
@@ -83,14 +95,19 @@ public class Menu extends JPanel {
         this.validateButton.setBounds(this.getWidth() / 2 - Menu.BUTTON_WIDTH - Menu.BUTTON_PADDING / 2,
                 Menu.LABEL_PADDING + Menu.LABEL_PADDING + Menu.BUTTON_PADDING,
                 Menu.BUTTON_WIDTH, Menu.BUTTON_HEIGHT);
+        this.validateButton.setEnabled(false);
 
         this.undoButton.setBounds(this.getWidth() / 2 + Menu.BUTTON_PADDING / 2,
                 Menu.LABEL_PADDING + Menu.LABEL_PADDING + Menu.BUTTON_PADDING,
                 Menu.BUTTON_WIDTH, Menu.BUTTON_HEIGHT);
+        this.undoButton.setEnabled(false);
 
-        this.restartButton.setBounds(this.getWidth() - Menu.BUTTON_WIDTH - Menu.BUTTON_PADDING,
+        this.restartButton.setBounds((this.getWidth() - Menu.BUTTON_WIDTH) / 2,
                 this.getHeight() - Menu.BUTTON_HEIGHT - Menu.BUTTON_PADDING,
                 Menu.BUTTON_WIDTH, Menu.BUTTON_HEIGHT);
+        this.restartButton.setVisible(false);
+
+        this.playerOrder.setFont(new Font("Arial", Font.BOLD, Menu.LABEL_FONT_SIZE));
 
         this.add(this.playerOrder);
         this.add(this.validateButton);

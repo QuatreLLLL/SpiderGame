@@ -5,12 +5,16 @@ import org.example.view.CellView;
 import org.example.view.PawnView;
 
 import java.awt.Point;
+import java.util.function.Consumer;
 
 public class PawnController {
 
     private final Pawn pawn;
 
     private final PawnView pawnView;
+
+    private Consumer<PawnController> legalMovesUpdater;
+    private Consumer<PawnController> pawnPlacementHandler;
 
     public PawnController(Pawn pawn, PawnView pawnView) {
         this.pawn = pawn;
@@ -29,12 +33,21 @@ public class PawnController {
         return this.pawnView;
     }
 
+    public void setLegalMovesUpdater(Consumer<PawnController> legalMovesUpdater) {
+        this.legalMovesUpdater = legalMovesUpdater;
+    }
+
+    public void setPawnPlacementHandler(Consumer<PawnController> pawnPlacementHandler) {
+        this.pawnPlacementHandler = pawnPlacementHandler;
+    }
+
     public void handleMousePressed(Point point) {
         this.pawnView.setMouseOffset(point);
         this.pawnView.setCurrentParent(this.pawnView.getParent());
         this.pawnView.setCurrentLocation(this.pawnView.getLocation());
 
         this.pawnView.startDrag();
+        this.legalMovesUpdater.accept(this);
     }
 
     public void handleMouseReleased(Point point) {
@@ -44,8 +57,9 @@ public class PawnController {
         this.pawnView.getRootLayer().remove(this.pawnView);
         this.pawnView.getRootLayer().repaint();
 
-        if (cell != null) {
+        if (cell != null && cell.getStatus()) {
             this.pawnView.snapToCell(cell);
+            this.pawnPlacementHandler.accept(this);
         } else {
             this.pawnView.cancelMove();
         }

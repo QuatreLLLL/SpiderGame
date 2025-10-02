@@ -12,10 +12,10 @@ public class Game {
     private final List<Pawn> pawns;
     private final Grid grid;
 
-    public Game() {
+    public Game(Grid grid) {
         this.players = new ArrayList<>();
         this.pawns = new ArrayList<>();
-        this.grid = new Grid();
+        this.grid = grid;
     }
 
     public void addPawn(Pawn pawn) {
@@ -34,7 +34,7 @@ public class Game {
         return this.pawns;
     }
 
-    public List<Cell> defineLegalMoves(Pawn pawn) {
+    public List<Cell> getLegalMoves(Pawn pawn) {
         List<Cell> candidates = (this.pawns.size() == Game.GRID_PAWNS_NUMBER)
                 ? pawn.getPosition().getNeighborhood()
                 : this.grid.getCells();

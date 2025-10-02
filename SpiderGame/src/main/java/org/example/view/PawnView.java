@@ -27,7 +27,7 @@ public class PawnView extends JLayeredPane {
     private boolean listenersEnabled;
     private boolean selected;
 
-    private Optional<int[]> cellId;
+    private int[] cellId;
 
     private Consumer<Point> onMousePressed;
     private Consumer<Point> onMouseReleased;
@@ -80,7 +80,7 @@ public class PawnView extends JLayeredPane {
         return this.selected;
     }
 
-    public Optional<int[]> getCellId() {
+    public int[] getCellId() {
         return this.cellId;
     }
 
@@ -94,6 +94,19 @@ public class PawnView extends JLayeredPane {
 
     public void setCurrentParent(Container currentParent) {
         this.currentParent = currentParent;
+    }
+
+    public void updateParent() {
+        this.formerParent = this.currentParent;
+        this.formerLocation = this.currentLocation;
+    }
+
+    public void undoMove() {
+        this.setLocation(this.formerLocation);
+        this.currentParent.remove(this);
+        this.formerParent.add(this, JLayeredPane.DRAG_LAYER);
+        this.currentParent = this.formerParent;
+        this.currentLocation = this.formerLocation;
     }
 
     public void setCurrentLocation(Point currentLocation) {
@@ -163,13 +176,12 @@ public class PawnView extends JLayeredPane {
         this.rootLayer.remove(this);
         this.rootLayer.repaint();
 
-        this.cellId = Optional.of(new int[] {cell.getRowId(), cell.getColumnId()});
+        this.cellId = new int[] {cell.getRowId(), cell.getColumnId()};
         this.setLocation(PawnView.PAWN_PADDING, PawnView.PAWN_PADDING);
         cell.add(this, JLayeredPane.PALETTE_LAYER);
         cell.revalidate();
         cell.repaint();
 
-        this.formerParent = this.currentParent;
         this.currentParent = cell;
     }
 
