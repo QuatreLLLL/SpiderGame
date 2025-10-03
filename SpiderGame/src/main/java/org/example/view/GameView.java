@@ -10,9 +10,9 @@ public class GameView extends JFrame {
     private static final int SCREEN_MARGIN = 50;
     private static final int LABEL_MARGIN = 10;
 
-    private static final int TITLE_WIDTH = 200;
+    private static final int TITLE_WIDTH = 250;
     private static final int TITLE_HEIGHT = 100;
-    private static final int TITLE_FONT_SIZE = 28;
+    private static final int TITLE_FONT_SIZE = 30;
 
     private static final int DIALOG_WIDTH = 400;
     private static final int DIALOG_HEIGHT = 400;
@@ -25,14 +25,14 @@ public class GameView extends JFrame {
 
     private final JPanel panel;
     private final GridView gridView;
-    private final PawnBox pawnBox1;
-    private final PawnBox pawnBox2;
+    private final PlayerView pawnBox1;
+    private final PlayerView pawnBox2;
     private final Menu menu;
     private final JLabel gameTitle;
     private final JDialog dialog;
     private final JLabel label;
 
-    public GameView(GridView gridView, PawnBox pawnBox1, PawnBox pawnBox2) {
+    public GameView(GridView gridView, PlayerView pawnBox1, PlayerView pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         this.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - GameView.SCREEN_MARGIN;
         this.panel = (JPanel) this.getContentPane();
@@ -68,11 +68,11 @@ public class GameView extends JFrame {
                 (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(this.gridView, JLayeredPane.DEFAULT_LAYER);
 
-        this.pawnBox1.initialize(PawnBox.BOX_MARGIN,
+        this.pawnBox1.initialize(PlayerView.BOX_MARGIN,
                 (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(this.pawnBox1, JLayeredPane.DEFAULT_LAYER);
 
-        this.pawnBox2.initialize(this.panel.getWidth() - PawnBox.BOX_WIDTH - PawnBox.BOX_MARGIN,
+        this.pawnBox2.initialize(this.panel.getWidth() - PlayerView.BOX_WIDTH - PlayerView.BOX_MARGIN,
                 (int) (GameView.GAMEBOARD_COEFFICIENT * this.panel.getHeight()));
         this.panel.add(this.pawnBox2, JLayeredPane.DEFAULT_LAYER);
 
@@ -102,7 +102,7 @@ public class GameView extends JFrame {
         component.setVisible(true);
     }
 
-    public void updateLabelColor(JLabel label, PawnBox pawnBox) {
+    public void updateLabelColor(JLabel label, PlayerView pawnBox) {
         label.setForeground(pawnBox.getPawns().get(0).getColor());
     }
 

@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.model.Player;
-import org.example.view.PawnBox;
+import org.example.view.PlayerView;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class PlayerController extends MouseAdapter {
 
     private final Player player;
 
-    private final PawnBox pawnBox;
+    private final PlayerView pawnBox;
 
     private final List<PawnController> pawnControllers;
 
@@ -20,7 +20,7 @@ public class PlayerController extends MouseAdapter {
 
     public PlayerController(int id, boolean isPlaying) {
         this.player = new Player(id);
-        this.pawnBox = new PawnBox(id);
+        this.pawnBox = new PlayerView(id);
         this.pawnControllers = new ArrayList<>();
         this.createPawnControllers();
 
@@ -33,7 +33,7 @@ public class PlayerController extends MouseAdapter {
         return this.player;
     }
 
-    public PawnBox getPawnBox() {
+    public PlayerView getPawnBox() {
         return this.pawnBox;
     }
 

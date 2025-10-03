@@ -165,7 +165,8 @@ public class PawnView extends JLayeredPane {
         GridView gridView = (GridView) frame.getContentPane().getComponents()[0];
 
         for (CellView cellView : gridView.getCells()) {
-            Rectangle bounds = SwingUtilities.convertRectangle(cellView.getParent(), cellView.getBounds(), this.rootLayer);
+            Rectangle bounds = SwingUtilities.convertRectangle(cellView.getParent(), cellView.getBounds(),
+                    this.rootLayer);
             if (bounds.contains(mousePosition)) {
                 cell = cellView;
                 break;
@@ -185,6 +186,7 @@ public class PawnView extends JLayeredPane {
         cell.repaint();
 
         this.currentParent = cell;
+        this.currentLocation = this.getLocation();
     }
 
     public void cancelMove() {
