@@ -96,21 +96,6 @@ public class PawnView extends JLayeredPane {
         this.currentParent = currentParent;
     }
 
-    public void updateParent() {
-        this.formerParent = this.currentParent;
-        this.formerLocation = this.currentLocation;
-        this.selected = false;
-    }
-
-    public void undoMove() {
-        this.setLocation(this.formerLocation);
-        this.currentParent.remove(this);
-        this.formerParent.add(this, JLayeredPane.DRAG_LAYER);
-        this.currentParent = this.formerParent;
-        this.currentLocation = this.formerLocation;
-        this.selected = false;
-    }
-
     public void setCurrentLocation(Point currentLocation) {
         this.currentLocation = currentLocation;
     }
@@ -197,6 +182,22 @@ public class PawnView extends JLayeredPane {
         this.setLocation(this.currentLocation);
         this.currentParent.revalidate();
         this.currentParent.repaint();
+    }
+
+    public void updateParent() {
+        this.formerParent = this.currentParent;
+        this.formerLocation = this.currentLocation;
+        this.selected = false;
+    }
+
+    public void undoMove() {
+        this.setLocation(this.formerLocation);
+        this.currentParent.remove(this);
+        this.currentParent.repaint();
+        this.formerParent.add(this, JLayeredPane.DRAG_LAYER);
+        this.currentParent = this.formerParent;
+        this.currentLocation = this.formerLocation;
+        this.selected = false;
     }
 
     @Override
