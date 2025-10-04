@@ -1,11 +1,13 @@
 package org.example.view;
 
+import java.awt.*;
+
 public enum GameColor {
 
     RED(236, 112, 99),
     BLUE(93, 173, 226),
+    GREEN(40, 180, 99),
     LIGHT_GRAY(214, 219, 223),
-    DARK_GRAY(174, 182, 191),
     LIGHT_ASPHALT(52, 73, 94),
     DARK_ASPHALT(46, 64, 83);
 
@@ -17,7 +19,7 @@ public enum GameColor {
         this.b = b;
     }
 
-    public java.awt.Color get() {
-        return new java.awt.Color(this.r, this.g, this.b);
+    public Color get() {
+        return new Color(this.r, this.g, this.b);
     }
 }

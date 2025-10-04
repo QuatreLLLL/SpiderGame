@@ -15,7 +15,7 @@ public class Menu extends JPanel {
     private static final int LABEL_HEIGHT = 25;
     private static final int LABEL_FONT_SIZE = 20;
 
-    private static final int BUTTON_WIDTH = 180;
+    private static final int BUTTON_WIDTH = 160;
     private static final int BUTTON_HEIGHT = 50;
 
     private static final Color MENU_COLOR = GameColor.LIGHT_ASPHALT.get();
@@ -31,9 +31,11 @@ public class Menu extends JPanel {
 
     public Menu(int x, int y) {
         this.validateButton = new JButton("Validate");
+        this.validateButton.setForeground(GameColor.GREEN.get());
         this.undoButton = new JButton("Undo");
+        this.undoButton.setForeground(GameColor.RED.get());
         this.restartButton = new JButton("Restart");
-        this.playerOrder = new JLabel("Player");
+        this.playerOrder = new JLabel("Player's turn");
 
         this.setLayout(null);
         this.setBounds((x - Menu.MENU_WIDTH) / 2, y - Menu.MENU_HEIGHT + Menu.MENU_MARGIN,
