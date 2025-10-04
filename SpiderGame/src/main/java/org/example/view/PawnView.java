@@ -174,6 +174,7 @@ public class PawnView extends JLayeredPane {
     }
 
     public void cancelMove() {
+        this.selected = false;
         this.rootLayer.remove(this);
         this.rootLayer.repaint();
 

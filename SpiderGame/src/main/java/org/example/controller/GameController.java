@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.model.Cell;
 import org.example.model.Game;
 import org.example.view.GameView;
+import org.example.view.PawnView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class GameController {
     }
 
     public void validateMove(PlayerController playerController) {
-        this.gridController.getGridView().getCells().forEach(cellView -> cellView.setStatus(false));
+        this.gridController.getGridView().resetCellStatus();
         this.gameView.getMenu().getValidateButton().setEnabled(false);
         this.gameView.getMenu().getUndoButton().setEnabled(false);
         playerController.findSelectedPawn().ifPresent(pawnController -> {

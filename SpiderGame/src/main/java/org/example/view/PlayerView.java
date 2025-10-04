@@ -17,9 +17,6 @@ public class PlayerView extends JLayeredPane {
 
     private final List<PawnView> pawns;
 
-    private int x;
-    private int y;
-
     private final int playerId;
 
     private final Color innerColor;
@@ -40,10 +37,8 @@ public class PlayerView extends JLayeredPane {
     }
 
     public void initialize(int x, int y) {
-        this.x = x;
-        this.y = y;
         this.setLayout(null);
-        this.setBounds(this.x, (this.y - PlayerView.BOX_HEIGHT) / 2, PlayerView.BOX_WIDTH, PlayerView.BOX_HEIGHT);
+        this.setBounds(x, (y - PlayerView.BOX_HEIGHT) / 2, PlayerView.BOX_WIDTH, PlayerView.BOX_HEIGHT);
     }
 
     public void createPawnBox() {
@@ -75,13 +70,6 @@ public class PlayerView extends JLayeredPane {
     }
 
 /*    public void initializePawns() {
-        for (int i = 0; i < 3; i++) {
-            int PAWN_OFFSET = ((PawnBox.BOX_HEIGHT - 2 * PawnBox.BOX_PADDING) / (PawnBox.PAWN_NUMBER));
-            this.pawns.get(i).initialize(PawnBox.BOX_WIDTH / 2 - PawnView.RADIUS,
-                    PawnBox.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS);
-        }
-    }*/
-
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
