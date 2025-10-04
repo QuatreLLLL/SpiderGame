@@ -205,6 +205,7 @@ public class PawnView extends JLayeredPane {
         super.paintComponent(graphics);
 
         Graphics2D g2d = (Graphics2D) graphics.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         int x = 0;
         int y = 0;
