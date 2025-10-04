@@ -13,9 +13,10 @@ public class GameView extends JFrame {
     private static final int TITLE_WIDTH = 250;
     private static final int TITLE_HEIGHT = 100;
     private static final int TITLE_FONT_SIZE = 30;
+    private static final int BODY_FONT_SIZE = 20;
 
     private static final int DIALOG_WIDTH = 400;
-    private static final int DIALOG_HEIGHT = 400;
+    private static final int DIALOG_HEIGHT = 250;
 
     private static final double GAMEBOARD_COEFFICIENT = 0.7;
     private static final double MENU_COEFFICIENT = 0.8;
@@ -30,7 +31,8 @@ public class GameView extends JFrame {
     private final Menu menu;
     private final JLabel gameTitle;
     private final JDialog dialog;
-    private final JLabel label;
+    private final JLabel titleLabel;
+    private final JLabel bodyLabel;
 
     public GameView(GridView gridView, PlayerView pawnBox1, PlayerView pawnBox2) {
         this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -43,7 +45,8 @@ public class GameView extends JFrame {
         this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
         this.menu.getPlayerOrder().setForeground(GameColor.BLUE.get());
         this.dialog = new JDialog(this);
-        this.label = new JLabel("Player wins!");
+        this.titleLabel = new JLabel("Player wins!");
+        this.bodyLabel = new JLabel();
     }
 
     public Menu getMenu() {
@@ -54,8 +57,12 @@ public class GameView extends JFrame {
         return this.dialog;
     }
 
-    public JLabel getLabel() {
-        return this.label;
+    public JLabel getTitleLabel() {
+        return this.titleLabel;
+    }
+
+    public JLabel getBodylabel() {
+        return this.bodyLabel;
     }
 
     public void initialize() {
@@ -83,10 +90,15 @@ public class GameView extends JFrame {
 
         this.dialog.setBounds((this.width - GameView.DIALOG_WIDTH) / 2,
                 (this.height - GameView.DIALOG_HEIGHT) / 2, GameView.DIALOG_WIDTH, GameView.DIALOG_HEIGHT);
-        this.label.setBounds((GameView.DIALOG_WIDTH - 100) / 2, (GameView.DIALOG_HEIGHT - 50) / 2, 100, 50);
-        this.label.setHorizontalAlignment(SwingConstants.CENTER);
-        this.label.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
-        this.dialog.add(this.label);
+        this.dialog.getContentPane().setBackground(GameColor.LIGHT_GRAY.get());
+        this.titleLabel.setBounds((GameView.DIALOG_WIDTH - 200) / 2, (GameView.DIALOG_HEIGHT - 50) / 2 - 80, 200, 50);
+        this.titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.titleLabel.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
+        this.dialog.add(this.titleLabel);
+        this.bodyLabel.setBounds((GameView.DIALOG_WIDTH - 200) / 2, (GameView.DIALOG_HEIGHT - 50) / 2 + 80, 200, 50);
+        this.bodyLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.bodyLabel.setFont(new Font("Arial", Font.PLAIN, GameView.BODY_FONT_SIZE));
+        this.dialog.add(this.bodyLabel);
         this.dialog.setVisible(false);
 
         this.panel.add(this.gameTitle);

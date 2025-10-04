@@ -96,8 +96,12 @@ public class GameController {
             this.game.addPawn(pawnController.getPawn());
             pawnController.getPawnView().updateParent();
             if (this.game.isOver(pawnController.getPawn())) {
+                playerController.getPlayer().incrementWins();
                 this.playerControllers.forEach(PlayerController::unregisterPawnListeners);
-                this.gameView.updateLabelColor(this.gameView.getLabel(), playerController.getPawnBox());
+                this.gameView.updateLabelColor(this.gameView.getTitleLabel(), playerController.getPawnBox());
+                int wins = playerController.getPlayer().getWins();
+                this.gameView.getBodylabel().setText("<html>He has won " + wins + " time" + ((wins > 1) ? "s" : "")
+                        + ".<br>Click \"Restart\" to start a new game!</html>");
                 this.gameView.showComponent(this.gameView.getDialog(), true);
                 this.gameView.showComponent(this.gameView.getMenu().getRestartButton(), true);
             }

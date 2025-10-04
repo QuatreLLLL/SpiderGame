@@ -11,6 +11,8 @@ public class Player {
 
     private final List<Pawn> pawns;
 
+    private int wins;
+
     public Player(int id) {
         this.id = id;
         this.pawns = new ArrayList<>();
@@ -42,11 +44,11 @@ public class Player {
         return count;
     }
 
-    public Pawn selectPawn(Pawn pawn) {
-        return pawn;
+    public int getWins() {
+        return this.wins;
     }
 
-    public Cell selectCell(Cell cell) {
-        return cell;
+    public void incrementWins() {
+        this.wins++;
     }
 }
