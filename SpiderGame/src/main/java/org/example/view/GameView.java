@@ -15,8 +15,8 @@ public class GameView extends JFrame {
     private static final int TITLE_FONT_SIZE = 30;
     private static final int BODY_FONT_SIZE = 20;
 
-    private static final int DIALOG_WIDTH = 400;
-    private static final int DIALOG_HEIGHT = 250;
+    private static final int DIALOG_WIDTH = 500;
+    private static final int DIALOG_HEIGHT = 300;
 
     private static final double GAMEBOARD_COEFFICIENT = 0.7;
     private static final double MENU_COEFFICIENT = 0.8;

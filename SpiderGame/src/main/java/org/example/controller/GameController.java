@@ -101,7 +101,7 @@ public class GameController {
                 this.gameView.updateLabelColor(this.gameView.getTitleLabel(), playerController.getPawnBox());
                 int wins = playerController.getPlayer().getWins();
                 this.gameView.getBodylabel().setText("<html>He has won " + wins + " time" + ((wins > 1) ? "s" : "")
-                        + ".<br>Click \"Restart\" to start a new game!</html>");
+                        + ".<br>Click \"Restart\" to start a new game. Loser plays first!</html>");
                 this.gameView.showComponent(this.gameView.getDialog(), true);
                 this.gameView.showComponent(this.gameView.getMenu().getRestartButton(), true);
             }
