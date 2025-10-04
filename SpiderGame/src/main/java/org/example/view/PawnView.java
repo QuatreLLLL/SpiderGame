@@ -11,6 +11,10 @@ public class PawnView extends JLayeredPane {
 
     public static final int PAWN_PADDING = 5;
     public static final int RADIUS = 45;
+    private static final int OUTLINE_THICKNESS = 6;
+    private static final int MAX_OUTLINE_ALPHA = 60;
+    private static final int OUTLINE_ANIMATION_DURATION = 1000;
+    private static final int OUTLINE_TIMER_DELAY = 80;
 
     private final int id;
 
@@ -31,6 +35,11 @@ public class PawnView extends JLayeredPane {
     private Consumer<Point> onMousePressed;
     private Consumer<Point> onMouseReleased;
     private Consumer<Point> onMouseDragged;
+
+    private Timer outlineTimer;
+    private int outlineAlpha = 0;
+    private boolean outlineIncreasing = true;
+    private boolean outlineAnimating = false;
 
     public PawnView(int x, int y, Color color, int id) {
         this.color = color;
@@ -83,10 +92,6 @@ public class PawnView extends JLayeredPane {
         return this.cellId;
     }
 
-    public JLayeredPane getRootLayer() {
-        return this.rootLayer;
-    }
-
     public Container getCurrentParent() {
         return this.currentParent;
     }
@@ -105,10 +110,12 @@ public class PawnView extends JLayeredPane {
 
     public void enableListeners() {
         this.listenersEnabled = true;
+        this.startOutlineAnimation();
     }
 
     public void disableListeners() {
         this.listenersEnabled = false;
+        this.stopOutlineAnimation();
     }
 
     public void setOnMousePressed(Consumer<Point> handler) {
@@ -163,7 +170,7 @@ public class PawnView extends JLayeredPane {
         this.rootLayer.remove(this);
         this.rootLayer.repaint();
 
-        this.cellId = new int[] {cell.getRowId(), cell.getColumnId()};
+        this.cellId = new int[]{cell.getRowId(), cell.getColumnId()};
         this.setLocation(PawnView.PAWN_PADDING, PawnView.PAWN_PADDING);
         cell.add(this, JLayeredPane.PALETTE_LAYER);
         cell.revalidate();
@@ -200,6 +207,47 @@ public class PawnView extends JLayeredPane {
         this.selected = false;
     }
 
+    public void startOutlineAnimation() {
+        if (this.outlineAnimating) {
+            return;
+        }
+        this.outlineAnimating = true;
+        this.outlineIncreasing = true;
+
+        int steps = PawnView.OUTLINE_ANIMATION_DURATION / PawnView.OUTLINE_TIMER_DELAY;
+        float alphaStep = (float) PawnView.MAX_OUTLINE_ALPHA / steps;
+
+        this.outlineTimer = new Timer(PawnView.OUTLINE_TIMER_DELAY, e -> {
+            if (!this.outlineAnimating) {
+                this.outlineTimer.stop();
+                return;
+            }
+
+            this.outlineAlpha += (int) (this.outlineIncreasing ? alphaStep : -alphaStep);
+
+            if (this.outlineAlpha >= PawnView.MAX_OUTLINE_ALPHA) {
+                this.outlineAlpha = PawnView.MAX_OUTLINE_ALPHA;
+                this.outlineIncreasing = false;
+            } else if (this.outlineAlpha <= 0) {
+                this.outlineAlpha = 0;
+                this.outlineIncreasing = true;
+            }
+
+            this.repaint();
+        });
+
+        this.outlineTimer.start();
+    }
+
+    public void stopOutlineAnimation() {
+        this.outlineAnimating = false;
+        if (this.outlineTimer != null) {
+            this.outlineTimer.stop();
+        }
+        this.outlineAlpha = 0;
+        this.repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -232,6 +280,13 @@ public class PawnView extends JLayeredPane {
         );
         g2d.setPaint(highlight);
         g2d.fillOval(x + PawnView.RADIUS / 2, y, PawnView.RADIUS, PawnView.RADIUS / 2);
+
+        g2d.setStroke(new BasicStroke(PawnView.OUTLINE_THICKNESS));
+        g2d.setColor(new Color(255, 255, 255, this.outlineAlpha));
+        int inset = PawnView.OUTLINE_THICKNESS / 2;
+        g2d.drawOval(x + inset, y + inset,
+                (PawnView.RADIUS * 2) - PawnView.OUTLINE_THICKNESS,
+                (PawnView.RADIUS * 2) - PawnView.OUTLINE_THICKNESS);
 
         g2d.dispose();
     }
