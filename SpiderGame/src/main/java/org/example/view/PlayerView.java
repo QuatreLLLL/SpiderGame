@@ -69,7 +69,6 @@ public class PlayerView extends JLayeredPane {
         this.repaint();
     }
 
-/*    public void initializePawns() {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
