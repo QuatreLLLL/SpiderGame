@@ -43,9 +43,9 @@ public class PlayerView extends JLayeredPane {
 
     public void createPawnBox() {
         for (int i = 0; i < PlayerView.PAWN_NUMBER; i++) {
-            int PAWN_OFFSET = ((PlayerView.BOX_HEIGHT - 2 * PlayerView.BOX_PADDING) / (PlayerView.PAWN_NUMBER));
+            int pawn_offset = ((PlayerView.BOX_HEIGHT - 2 * PlayerView.BOX_PADDING) / (PlayerView.PAWN_NUMBER));
             PawnView pawn = new PawnView(PlayerView.BOX_WIDTH / 2 - PawnView.RADIUS,
-                    PlayerView.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS,
+                    PlayerView.BOX_PADDING + pawn_offset * i + pawn_offset / 2 - PawnView.RADIUS,
                     this.playerColor, i);
             this.add(pawn, JLayeredPane.DEFAULT_LAYER);
             pawn.setCurrentParent(this);
@@ -57,12 +57,13 @@ public class PlayerView extends JLayeredPane {
 
     public void restart() {
         for (int i = 0; i < PlayerView.PAWN_NUMBER; i++) {
-            int PAWN_OFFSET = ((PlayerView.BOX_HEIGHT - 2 * PlayerView.BOX_PADDING) / (PlayerView.PAWN_NUMBER));
+            int pawn_offset = ((PlayerView.BOX_HEIGHT - 2 * PlayerView.BOX_PADDING) / (PlayerView.PAWN_NUMBER));
             PawnView pawn = this.pawns.get(i);
             pawn.getCurrentParent().remove(pawn);
+            pawn.getCurrentParent().revalidate();
             pawn.getCurrentParent().repaint();
             pawn.setLocation(PlayerView.BOX_WIDTH / 2 - PawnView.RADIUS,
-                    PlayerView.BOX_PADDING + PAWN_OFFSET * i + PAWN_OFFSET / 2 - PawnView.RADIUS);
+                    PlayerView.BOX_PADDING + pawn_offset * i + pawn_offset / 2 - PawnView.RADIUS);
             this.add(pawn);
         }
         this.revalidate();

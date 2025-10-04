@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.Player;
+import org.example.view.PawnView;
 import org.example.view.PlayerView;
 
 import java.awt.event.MouseAdapter;
@@ -74,5 +75,24 @@ public class PlayerController extends MouseAdapter {
         return this.pawnControllers.stream()
                 .filter(pawnController -> pawnController.getPawnView().isSelected())
                 .findFirst();
+    }
+
+    public void restart() {
+        for (int i = 0; i < PlayerView.PAWN_NUMBER; i++) {
+            int pawn_offset = ((PlayerView.BOX_HEIGHT - 2 * PlayerView.BOX_PADDING) / (PlayerView.PAWN_NUMBER));
+            this.pawnControllers.stream().map(PawnController::getPawn).forEach(pawn -> pawn.setPosition(null));
+            PawnView pawn = this.pawnBox.getPawns().get(i);
+            pawn.getCurrentParent().remove(pawn);
+            pawn.getCurrentParent().revalidate();
+            pawn.getCurrentParent().repaint();
+            pawn.setLocation(PlayerView.BOX_WIDTH / 2 - PawnView.RADIUS,
+                    PlayerView.BOX_PADDING + pawn_offset * i + pawn_offset / 2 - PawnView.RADIUS);
+            this.pawnBox.add(pawn);
+        }
+        if (this.isPlaying) {
+            this.registerPawnListeners();
+        }
+        this.pawnBox.revalidate();
+        this.pawnBox.repaint();
     }
 }

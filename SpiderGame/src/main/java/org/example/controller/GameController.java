@@ -3,7 +3,6 @@ package org.example.controller;
 import org.example.model.Cell;
 import org.example.model.Game;
 import org.example.view.GameView;
-import org.example.view.PawnView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +46,14 @@ public class GameController {
                         this.gameView.updateLabelColor(this.gameView.getMenu().getPlayerOrder(),
                                 playerController.getPawnBox()));
 
-        playingPlayer.ifPresent(this::validateMove);
         this.playerControllers.forEach(PlayerController::updatePlayingStatus);
+        playingPlayer.ifPresent(this::validateMove);
     }
 
     public void handleRestartButtonPressed() {
         this.game.restart();
-        this.gameView.restart();
+        this.playerControllers.forEach(PlayerController::restart);
+        this.gameView.showComponent(this.gameView.getMenu().getRestartButton(), false);
     }
 
     public void handleUndoButtonPressed() {
@@ -96,9 +96,10 @@ public class GameController {
             this.game.addPawn(pawnController.getPawn());
             pawnController.getPawnView().updateParent();
             if (this.game.isOver(pawnController.getPawn())) {
+                this.playerControllers.forEach(PlayerController::unregisterPawnListeners);
                 this.gameView.updateLabelColor(this.gameView.getLabel(), playerController.getPawnBox());
-                this.gameView.showComponent(this.gameView.getDialog());
-                this.gameView.showComponent(this.gameView.getMenu().getRestartButton());
+                this.gameView.showComponent(this.gameView.getDialog(), true);
+                this.gameView.showComponent(this.gameView.getMenu().getRestartButton(), true);
             }
         });
     }

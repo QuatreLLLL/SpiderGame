@@ -98,8 +98,8 @@ public class GameView extends JFrame {
         this.pawnBox2.restart();
     }
 
-    public void showComponent(Component component) {
-        component.setVisible(true);
+    public void showComponent(Component component, boolean show) {
+        component.setVisible(show);
     }
 
     public void updateLabelColor(JLabel label, PlayerView pawnBox) {

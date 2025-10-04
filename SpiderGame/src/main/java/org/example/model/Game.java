@@ -1,6 +1,5 @@
 package org.example.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,22 +9,16 @@ public class Game {
 
     public static final int GRID_PAWNS_NUMBER = 6;
 
-    private final List<Player> players;
     private final Set<Pawn> pawns;
     private final Grid grid;
 
     public Game(Grid grid) {
-        this.players = new ArrayList<>();
         this.pawns = new HashSet<>();
         this.grid = grid;
     }
 
     public void addPawn(Pawn pawn) {
         this.pawns.add(pawn);
-    }
-
-    public void addPlayer(Player player) {
-        this.players.add(player);
     }
 
     public Grid getGrid() {
