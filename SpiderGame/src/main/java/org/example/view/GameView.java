@@ -43,7 +43,7 @@ public class GameView extends JFrame {
         this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
         this.menu.getPlayerOrder().setForeground(GameColor.BLUE.get());
         this.dialog = new JDialog(this);
-        this.label = new JLabel("Player win");
+        this.label = new JLabel("Player wins!");
     }
 
     public Menu getMenu() {

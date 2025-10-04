@@ -54,9 +54,6 @@ public class PawnController {
         Point mousePosition = this.pawnView.convertPointToRootLayer(point);
         CellView cell = this.pawnView.findTargetCell(mousePosition);
 
-        this.pawnView.getRootLayer().remove(this.pawnView);
-        this.pawnView.getRootLayer().repaint();
-
         if (cell != null && cell.getStatus()) {
             this.pawnView.snapToCell(cell);
             this.pawnPlacementHandler.accept(this);
