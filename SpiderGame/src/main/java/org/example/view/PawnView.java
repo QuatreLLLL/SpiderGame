@@ -5,12 +5,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PawnView extends JLayeredPane {
 
-    private static final int PAWN_PADDING = 5;
+    public static final int PAWN_PADDING = 5;
     public static final int RADIUS = 45;
 
     private final int id;
