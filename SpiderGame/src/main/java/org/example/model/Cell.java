@@ -54,13 +54,13 @@ public class Cell {
                 {this.rowId, this.columnId + 1},
                 {this.rowId, this.columnId - 1},
                 {this.rowId - 1, this.columnId - 1},
-                {this.rowId + 1, this.rowId + 1},
+                {this.rowId + 1, this.columnId + 1},
                 {this.rowId + 1, this.columnId - 1},
                 {this.rowId - 1, this.columnId + 1}
         };
 
-        for (int i = 0; i < Arrays.stream(potentialNeighborsIds).count(); i++) {
-            Cell neighbor = grid.findCell(potentialNeighborsIds[i][0], potentialNeighborsIds[i][1]);
+        for (int[] coords : potentialNeighborsIds) {
+            Cell neighbor = grid.findCell(coords[0], coords[1]);
             if (neighbor != null) {
                 this.neighborhood.add(neighbor);
             }
