@@ -68,6 +68,10 @@ public class GameController {
     }
 
     public void updateLegalMoves(PawnController pawnController) {
+        this.gridController.getGridView().resetCellStatus();
+        if (pawnController == null) {
+            return;
+        }
         for (Cell cell : this.game.getLegalMoves(pawnController.getPawn())) {
             this.gridController.getCells().get(this.gridController.getGrid().getCells().indexOf(cell))
                     .setCellStatus(true);

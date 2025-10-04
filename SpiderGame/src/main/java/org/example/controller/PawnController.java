@@ -62,6 +62,7 @@ public class PawnController {
             this.pawnPlacementHandler.accept(this);
         } else {
             this.pawnView.cancelMove();
+            this.legalMovesUpdater.accept(null);
         }
     }
 
