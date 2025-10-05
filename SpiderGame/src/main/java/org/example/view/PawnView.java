@@ -14,7 +14,9 @@ public class PawnView extends JLayeredPane {
     private static final int OUTLINE_THICKNESS = 6;
     private static final int MAX_OUTLINE_ALPHA = 60;
     private static final int OUTLINE_ANIMATION_DURATION = 1000;
-    private static final int OUTLINE_TIMER_DELAY = 80;
+    private static final int OUTLINE_ANIMATION_DELAY = 80;
+    private static final int MOVEMENT_ANIMATION_DURATION = 250;
+    private static final int MOVEMENT_ANIMATION_DELAY = 10;
 
     private final int id;
 
@@ -182,14 +184,20 @@ public class PawnView extends JLayeredPane {
 
     public void cancelMove() {
         this.selected = false;
-        this.rootLayer.remove(this);
-        this.rootLayer.repaint();
 
-        this.currentParent.add(this);
-        this.setLocation(this.currentLocation);
-        this.currentParent.revalidate();
-        this.currentParent.repaint();
+        Point start = this.getLocation();
+        Point end = SwingUtilities.convertPoint(this.currentParent, this.currentLocation, this.rootLayer);
+
+        this.animateMove(start, end, () -> {
+            this.rootLayer.remove(this);
+            this.rootLayer.repaint();
+            this.currentParent.add(this, JLayeredPane.PALETTE_LAYER);
+            this.setLocation(this.currentLocation);
+            this.currentParent.revalidate();
+            this.currentParent.repaint();
+        });
     }
+
 
     public void updateParent() {
         this.formerParent = this.currentParent;
@@ -198,14 +206,60 @@ public class PawnView extends JLayeredPane {
     }
 
     public void undoMove() {
-        this.setLocation(this.formerLocation);
-        this.currentParent.remove(this);
+        if (this.currentParent == null || this.formerParent == null) {
+            return;
+        }
+
+        Point start = SwingUtilities.convertPoint(this.currentParent, this.getLocation(), this.rootLayer);
+        Point end = SwingUtilities.convertPoint(this.formerParent, this.formerLocation, this.rootLayer);
+
+        this.rootLayer.add(this, JLayeredPane.DRAG_LAYER);
+        this.setLocation(start);
         this.currentParent.repaint();
-        this.formerParent.add(this, JLayeredPane.DRAG_LAYER);
-        this.currentParent = this.formerParent;
-        this.currentLocation = this.formerLocation;
-        this.selected = false;
+
+        this.animateMove(start, end, () -> {
+            this.rootLayer.remove(this);
+            this.rootLayer.repaint();
+            this.formerParent.add(this, JLayeredPane.PALETTE_LAYER);
+            this.setLocation(this.formerLocation);
+            this.formerParent.revalidate();
+            this.formerParent.repaint();
+
+            this.currentParent = this.formerParent;
+            this.currentLocation = this.formerLocation;
+            this.selected = false;
+        });
     }
+
+
+    private void animateMove(Point start, Point end, Runnable onFinish) {
+        int steps = PawnView.MOVEMENT_ANIMATION_DURATION / PawnView.MOVEMENT_ANIMATION_DELAY;
+
+        double dx = (end.x - start.x) / (double) steps;
+        double dy = (end.y - start.y) / (double) steps;
+
+        Timer animationTimer = new Timer(PawnView.MOVEMENT_ANIMATION_DELAY, null);
+        final int[] currentStep = {0};
+
+        animationTimer.addActionListener(e -> {
+            if (currentStep[0] >= steps) {
+                animationTimer.stop();
+                if (onFinish != null) {
+                    onFinish.run();
+                }
+            } else {
+                int newX = (int) (start.x + dx * currentStep[0]);
+                int newY = (int) (start.y + dy * currentStep[0]);
+
+                this.setLocation(newX, newY);
+                this.rootLayer.repaint();
+                currentStep[0]++;
+            }
+        });
+
+        animationTimer.start();
+    }
+
 
     public void startOutlineAnimation() {
         if (this.outlineAnimating) {
@@ -214,10 +268,10 @@ public class PawnView extends JLayeredPane {
         this.outlineAnimating = true;
         this.outlineIncreasing = true;
 
-        int steps = PawnView.OUTLINE_ANIMATION_DURATION / PawnView.OUTLINE_TIMER_DELAY;
+        int steps = PawnView.OUTLINE_ANIMATION_DURATION / PawnView.OUTLINE_ANIMATION_DELAY;
         float alphaStep = (float) PawnView.MAX_OUTLINE_ALPHA / steps;
 
-        this.outlineTimer = new Timer(PawnView.OUTLINE_TIMER_DELAY, e -> {
+        this.outlineTimer = new Timer(PawnView.OUTLINE_ANIMATION_DELAY, e -> {
             if (!this.outlineAnimating) {
                 this.outlineTimer.stop();
                 return;
