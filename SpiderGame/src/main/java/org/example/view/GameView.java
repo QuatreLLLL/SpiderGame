@@ -2,17 +2,20 @@ package org.example.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GameView extends JFrame {
 
     public static final int BORDER_RADIUS = 50;
 
     private static final int SCREEN_MARGIN = 50;
-    private static final int LABEL_MARGIN = 10;
+    private static final int LABEL_MARGIN = 20;
 
-    private static final int TITLE_WIDTH = 250;
+    private static final int TITLE_WIDTH = 500;
     private static final int TITLE_HEIGHT = 100;
-    private static final int TITLE_FONT_SIZE = 30;
+    private static final int TITLE_FONT_SIZE = 64;
+    private static final int DIALOG_TITLE_FONT_SIZE = 32;
     private static final int BODY_FONT_SIZE = 20;
 
     private static final int DIALOG_WIDTH = 500;
@@ -41,7 +44,7 @@ public class GameView extends JFrame {
         this.gridView = gridView;
         this.pawnBox1 = pawnBox1;
         this.pawnBox2 = pawnBox2;
-        this.gameTitle = new JLabel("SPIDER GAME");
+        this.gameTitle = new JLabel("Spider Game");
         this.menu = new Menu(this.width, (int) (GameView.MENU_COEFFICIENT * this.height));
         this.menu.getPlayerOrder().setForeground(GameColor.BLUE.get());
         this.dialog = new JDialog(this);
@@ -86,14 +89,14 @@ public class GameView extends JFrame {
         this.gameTitle.setBounds((this.panel.getWidth() - GameView.TITLE_WIDTH) / 2, GameView.LABEL_MARGIN,
                 GameView.TITLE_WIDTH, GameView.TITLE_HEIGHT);
         this.gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        this.gameTitle.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
+        this.gameTitle.setFont(GameView.getFont(GameView.TITLE_FONT_SIZE));
 
         this.dialog.setBounds((this.width - GameView.DIALOG_WIDTH) / 2,
                 (this.height - GameView.DIALOG_HEIGHT) / 2, GameView.DIALOG_WIDTH, GameView.DIALOG_HEIGHT);
         this.dialog.getContentPane().setBackground(GameColor.LIGHT_GRAY.get());
         this.titleLabel.setBounds((GameView.DIALOG_WIDTH - 200) / 2, (GameView.DIALOG_HEIGHT - 50) / 2 - 80, 200, 50);
         this.titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.titleLabel.setFont(new Font("Arial", Font.BOLD, GameView.TITLE_FONT_SIZE));
+        this.titleLabel.setFont(new Font("Arial", Font.BOLD, GameView.DIALOG_TITLE_FONT_SIZE));
         this.dialog.add(this.titleLabel);
         this.bodyLabel.setBounds((GameView.DIALOG_WIDTH - 200) / 2, (GameView.DIALOG_HEIGHT - 50) / 2 + 80, 200, 50);
         this.bodyLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -126,6 +129,18 @@ public class GameView extends JFrame {
         this.pack();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static Font getFont(int size) {
+        Font font = new Font("Arial", Font.PLAIN, size);
+        try (InputStream inputStream = GameView.class.getResourceAsStream("/fonts/Overpass-Bold.ttf")) {
+            if (inputStream != null) {
+                font = Font.createFont(Font.TRUETYPE_FONT, inputStream)
+                        .deriveFont((float) size);
+            }
+        } catch (IOException | FontFormatException ignored) {
+        }
+        return font;
     }
 }
 
