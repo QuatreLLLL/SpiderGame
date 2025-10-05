@@ -54,6 +54,7 @@ public class GameController {
         this.game.restart();
         this.playerControllers.forEach(PlayerController::restart);
         this.gameView.showComponent(this.gameView.getMenu().getRestartButton(), false);
+        this.gameView.showComponent(this.gameView.getDialog(), false);
     }
 
     public void handleUndoButtonPressed() {
